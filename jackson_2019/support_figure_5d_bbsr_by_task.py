@@ -21,7 +21,7 @@ except ImportError:
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
 if __name__ == '__main__':
-    ws.start_mpcontrol_dask(100)
+    ws.start_mpcontrol_dask(60)
 
     # Figure 5D: MTL
     worker = ws.set_up_fig5a()
