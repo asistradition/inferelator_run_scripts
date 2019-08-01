@@ -26,8 +26,8 @@ if __name__ == '__main__':
     # Figure 6: Final Network
     worker = ws.set_up_workflow(workflow.inferelator_workflow(regression=BBSRByTaskRegressionWorkflow, workflow="amusr"))
     worker.append_to_path('output_dir', 'support_bbsr_fig6')
-    worker.priors_file = "YEASTRACT_Both_20181118.tsv"
-    worker.gold_standard_file = "YEASTRACT_Both_20181118.tsv"
+    worker.priors_file = ws.YEASTRACT_PRIOR
+    worker.gold_standard_file = ws.YEASTRACT_PRIOR
     worker.split_gold_standard_for_crossvalidation = False
     worker.split_priors_for_gold_standard = False
     worker.cv_split_ratio = None
