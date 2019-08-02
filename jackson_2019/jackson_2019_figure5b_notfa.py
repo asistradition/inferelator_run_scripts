@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     # Figure 5B: No Priors
     worker = ws.set_up_fig5b()
+    worker.tf_names_file = ws.YEASTRACT_TF_NAMES
     worker.append_to_path('output_dir', 'figure_5b_no_priors')
     from inferelator.preprocessing.tfa import NoTFA
 

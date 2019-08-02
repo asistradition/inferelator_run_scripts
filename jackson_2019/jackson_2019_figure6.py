@@ -24,8 +24,8 @@ if __name__ == '__main__':
 
     # Figure 6: Final Network
     worker = ws.set_up_workflow(workflow.inferelator_workflow(regression="amusr", workflow="amusr"))
+    worker = ws.yeastract(worker)
     worker.append_to_path('output_dir', 'figure_6_final')
-    worker.priors_file = ws.YEASTRACT_PRIOR
     worker.gold_standard_file = ws.YEASTRACT_PRIOR
     worker.split_gold_standard_for_crossvalidation = False
     worker.split_priors_for_gold_standard = False

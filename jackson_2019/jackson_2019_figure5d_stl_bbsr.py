@@ -25,8 +25,8 @@ if __name__ == '__main__':
     utils.Debug.vprint("Generating Fig 5D", level=0)
     # Figure 5D: STL
     worker = ws.set_up_fig5a()
+    worker = ws.yeastract(worker)
     worker.append_to_path('output_dir', 'figure_5d_stl')
-    worker.priors_file = ws.YEASTRACT_PRIOR
     worker.seeds = list(range(52, 62))
     worker.run()
     del worker

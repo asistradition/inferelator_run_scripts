@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     # Figure 5D: MTL
     worker = ws.set_up_fig5a()
+    worker = ws.yeastract(worker)
     worker.append_to_path('output_dir', 'figure_5d_mtl_amusr')
-    worker.priors_file = ws.YEASTRACT_PRIOR
     worker.cv_workflow_type = "amusr"
     worker.cv_regression_type = "amusr"
     worker.cv_result_processor_type = ResultsProcessorMultiTask

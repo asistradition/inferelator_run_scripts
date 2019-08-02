@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
     # Figure 5B: ATAC-Seq
     worker = ws.set_up_fig5b()
+    worker.tf_names_file = ws.YEASTRACT_TF_NAMES
     worker.append_to_path('output_dir', 'figure_5b_atac')
     worker.priors_file = "yeast-motif-prior.tsv"
     worker.gold_standard_file = "gold_standard.tsv"

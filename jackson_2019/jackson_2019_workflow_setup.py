@@ -8,9 +8,17 @@ INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 
 YEASTRACT_PRIOR = "YEASTRACT_2019713_BOTH.tsv"
-TF_NAMES = "tf_names_yeastract.txt"
+
+TF_NAMES = "tf_names_gold_standard.txt"
+YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions'
+
+
+def yeastract(wkf):
+    wkf.tf_names_file = YEASTRACT_TF_NAMES
+    wkf.priors_file = YEASTRACT_PRIOR
+    return wkf
 
 
 def set_up_workflow(wkf):

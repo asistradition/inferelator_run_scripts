@@ -22,8 +22,8 @@ if __name__ == '__main__':
     ws.start_mpcontrol_dask(40)
 
     worker = ws.set_up_workflow(single_cell_cv_workflow.SingleCellDropoutConditionSampling())
-    worker.append_to_path('output_dir', 'figure_5c_conditions')
-    worker.priors_file = ws.YEASTRACT_PRIOR
+    worker = ws.yeastract(worker)
+    worker.append_to_path('output_dir', 'figure_5c_conditions_yeastract')
     worker.sample_batches_to_size = 500
     worker.drop_column = "Condition"
     worker.model_dropouts = False

@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     # Figure 5B: YEASTRACT
     worker = ws.set_up_fig5b()
+    worker = ws.yeastract(worker)
     worker.append_to_path('output_dir', 'figure_5b_yeastract')
-    worker.priors_file = ws.YEASTRACT_PRIOR
     worker.gold_standard_file = "gold_standard.tsv"
     worker.run()
