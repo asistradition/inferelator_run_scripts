@@ -20,7 +20,7 @@ except ImportError:
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
 if __name__ == '__main__':
-    ws.start_mpcontrol_dask(100)
+    ws.start_mpcontrol_dask(200)
 
     # Figure 6: Final Network
     worker = ws.set_up_workflow(workflow.inferelator_workflow(regression="amusr", workflow="amusr"))
