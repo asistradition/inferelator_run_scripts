@@ -30,7 +30,7 @@ def set_up_workflow(wkf):
     wkf.expression_matrix_columns_are_genes = True
     wkf.extract_metadata_from_expression_matrix = True
     wkf.split_gold_standard_for_crossvalidation = True
-    wkf.cv_split_ratio = 0.2
+    wkf.cv_split_ratio = 0.5
     wkf.num_bootstraps = 5
     wkf.add_preprocess_step(single_cell.log2_data)
     return wkf
