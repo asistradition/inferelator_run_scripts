@@ -7,7 +7,7 @@ N_CORES = 200
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 
-YEASTRACT_PRIOR = "YEASTRACT_2019713_BOTH.tsv"
+YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 
 TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
