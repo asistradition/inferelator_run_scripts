@@ -33,6 +33,7 @@ def set_up_workflow(wkf):
     wkf.cv_split_ratio = 0.5
     wkf.num_bootstraps = 5
     wkf.add_preprocess_step(single_cell.log2_data)
+    wkf.count_minimum = 0.05
     return wkf
 
 
