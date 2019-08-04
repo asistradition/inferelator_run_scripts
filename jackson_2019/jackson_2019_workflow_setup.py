@@ -12,7 +12,7 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions/count_min'
 
 
 def yeastract(wkf):
