@@ -33,6 +33,7 @@ if __name__ == '__main__':
     worker.cv_regression_type = "amusr"
     worker.cv_result_processor_type = ResultsProcessorMultiTask
     worker.seeds = list(range(52, 62))
-    worker.task_expression_filter = "intersection"
+    worker.target_expression_filter = "union"
+    worker.regulator_expression_filter = "intersection"
     worker.run()
     del worker

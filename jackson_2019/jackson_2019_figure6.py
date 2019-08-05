@@ -32,5 +32,6 @@ if __name__ == '__main__':
     worker.cv_split_ratio = None
     worker.num_bootstraps = 50
     worker.random_seed = 100
-    worker.task_expression_filter = "intersection"
+    worker.target_expression_filter = "union"
+    worker.regulator_expression_filter = "intersection"
     worker.run()
