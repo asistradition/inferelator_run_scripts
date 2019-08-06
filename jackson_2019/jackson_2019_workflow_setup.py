@@ -12,7 +12,7 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions/count_min'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions/count_min_01'
 
 
 def yeastract(wkf):
@@ -33,7 +33,7 @@ def set_up_workflow(wkf):
     wkf.cv_split_ratio = 0.5
     wkf.num_bootstraps = 5
     wkf.add_preprocess_step(single_cell.log2_data)
-    wkf.count_minimum = 0.05
+    wkf.count_minimum = 0.1
     return wkf
 
 
