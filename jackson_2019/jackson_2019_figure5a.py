@@ -49,6 +49,7 @@ if __name__ == '__main__':
     worker.append_to_path('output_dir', 'figure_5a_magic')
     worker.expression_matrix_file = 'MAGIC_DATA.tsv.gz'
     worker.preprocessing_workflow = list()
+    worker.count_minimum = None
     worker.run()
     del worker
 
