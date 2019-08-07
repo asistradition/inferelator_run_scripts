@@ -12,7 +12,7 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions/count_min'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/elife_revisions/count_min_more_B'
 
 
 def yeastract(wkf):
@@ -49,7 +49,7 @@ def set_up_fig5a():
 def set_up_fig5b():
     wkf = set_up_workflow(single_cell_cv_workflow.SingleCellSizeSampling())
     wkf.random_seed = 1
-    wkf.seeds = list(range(42, 52))
+    wkf.seeds = list(range(42, 62))
     wkf.sizes = [0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 1]
     wkf.sample_with_replacement = False
     return wkf
