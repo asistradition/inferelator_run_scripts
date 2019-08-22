@@ -39,7 +39,6 @@ if __name__ == '__main__':
         # Jackson single cell task
         worker.create_task(task_name="Jackson_2019",
                            expression_matrix_file="103118_SS_Data.tsv.gz",
-                           input_dir="data/yeast",
                            tf_names_file=TF_NAMES,
                            gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
@@ -53,7 +52,6 @@ if __name__ == '__main__':
         # Calico data task
         worker.create_task(task_name="Calico_2019",
                            expression_matrix_file="calico_expression_matrix_log2.tsv.gz",
-                           input_dir="data/yeast",
                            tf_names_file=TF_NAMES,
                            gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
@@ -66,7 +64,6 @@ if __name__ == '__main__':
         # Kostya data task
         worker.create_task(task_name="Kostya_2019",
                            expression_matrix_file="kostya_microarray_yeast.tsv.gz",
-                           input_dir="data/yeast",
                            tf_names_file=TF_NAMES,
                            gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
