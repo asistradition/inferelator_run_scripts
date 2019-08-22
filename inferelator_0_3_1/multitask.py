@@ -70,7 +70,7 @@ if __name__ == '__main__':
                            gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
                            extract_metadata_from_expression_matrix=True,
-                           expression_matrix_metadata=['isTs', 'is1stLast', 'prevCol', 'del.t', 'condNam'],
+                           expression_matrix_metadata=['isTs', 'is1stLast', 'prevCol', 'del.t', 'condName'],
                            priors_file=YEASTRACT_PRIOR,
                            workflow_type="tfa",
                            metadata_handler="branching")
