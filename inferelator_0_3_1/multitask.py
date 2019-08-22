@@ -35,6 +35,8 @@ if __name__ == '__main__':
         worker.regulator_expression_filter = "intersection"
         worker.num_bootstraps = 5
         worker.random_seed = seed
+        worker.split_gold_standard_for_crossvalidation = True
+        worker.cv_split_ratio = 0.2
 
         # Jackson single cell task
         worker.create_task(task_name="Jackson_2019",
