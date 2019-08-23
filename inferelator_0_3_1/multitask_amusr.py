@@ -38,16 +38,17 @@ if __name__ == '__main__':
         worker.split_gold_standard_for_crossvalidation = True
         worker.cv_split_ratio = 0.2
         worker.gold_standard_file = "gold_standard.tsv"
+        worker.gene_metadata_file = "orfs.tsv"
+        worker.gene_list_index = "SystematicName"
+        worker.priors_file = YEASTRACT_PRIOR,
+        worker.tf_names_file = TF_NAMES
 
         # Jackson single cell task
         worker.create_task(task_name="Jackson_2019",
                            expression_matrix_file="103118_SS_Data.tsv.gz",
-                           tf_names_file=TF_NAMES,
-                           gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
                            extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode'],
-                           priors_file=YEASTRACT_PRIOR,
                            workflow_type="single-cell",
                            preprocessing_workflow=[(single_cell.log2_data, {})],
                            count_minimum=0.05)
@@ -55,24 +56,18 @@ if __name__ == '__main__':
         # Calico data task
         worker.create_task(task_name="Calico_2019",
                            expression_matrix_file="calico_expression_matrix_log2.tsv.gz",
-                           tf_names_file=TF_NAMES,
-                           gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
                            extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
-                           priors_file=YEASTRACT_PRIOR,
                            workflow_type="tfa",
                            metadata_handler="nonbranching")
 
         # Kostya data task
         worker.create_task(task_name="Kostya_2019",
                            expression_matrix_file="kostya_microarray_yeast.tsv.gz",
-                           tf_names_file=TF_NAMES,
-                           gene_metadata_file="orfs.tsv",
                            expression_matrix_columns_are_genes=True,
                            extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['isTs', 'is1stLast', 'prevCol', 'del.t', 'condName'],
-                           priors_file=YEASTRACT_PRIOR,
                            workflow_type="tfa",
                            metadata_handler="branching")
 
