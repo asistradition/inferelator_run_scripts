@@ -41,7 +41,7 @@ if __name__ == '__main__':
         worker.gold_standard_file = "gold_standard.tsv"
         worker.gene_metadata_file = "orfs.tsv"
         worker.gene_list_index = "SystematicName"
-        worker.priors_file = YEASTRACT_PRIOR,
+        worker.priors_file = YEASTRACT_PRIOR
         worker.tf_names_file = TF_NAMES
 
         # Jackson single cell task
