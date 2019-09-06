@@ -31,19 +31,14 @@ if __name__ == '__main__':
 
     for seed in range(42, 52):
         worker = workflow.inferelator_workflow(regression=BBSRByTaskRegressionWorkflow, workflow="amusr")
-        worker.input_dir = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
+        worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, gold_standard_file="gold_standard.tsv",
+                              gene_metadata_file="orfs", priors_file=YEASTRACT_PRIOR, tf_names_file=YEASTRACT_TF_NAMES)
+        worker.set_file_properties(gene_list_index="SystematicName")
+        worker.set_task_filters(target_expression_filter="union", regulator_expression_filter="intersection")
+        worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
+        worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
+
         worker.append_to_path('output_dir', "fig5d_mtl_bbsr_seed_" + str(seed))
-        worker.target_expression_filter = "union"
-        worker.regulator_expression_filter = "intersection"
-        worker.num_bootstraps = 5
-        worker.random_seed = seed
-        worker.split_gold_standard_for_crossvalidation = True
-        worker.cv_split_ratio = 0.2
-        worker.gold_standard_file = "gold_standard.tsv"
-        worker.gene_metadata_file = "orfs.tsv"
-        worker.gene_list_index = "SystematicName"
-        worker.priors_file = YEASTRACT_PRIOR
-        worker.tf_names_file = YEASTRACT_TF_NAMES
 
         # Jackson single cell task
         task = worker.create_task(task_name="Jackson_2019",
