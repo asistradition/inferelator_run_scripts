@@ -32,7 +32,8 @@ if __name__ == '__main__':
         worker = workflow.inferelator_workflow(regression="amusr", workflow="amusr")
 
         worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, gold_standard_file="gold_standard.tsv",
-                              gene_metadata_file="orfs", priors_file=YEASTRACT_PRIOR, tf_names_file=YEASTRACT_TF_NAMES)
+                              gene_metadata_file="orfs.tsv", priors_file=YEASTRACT_PRIOR,
+                              tf_names_file=YEASTRACT_TF_NAMES)
         worker.set_file_properties(gene_list_index="SystematicName")
         worker.set_task_filters(target_expression_filter="union", regulator_expression_filter="intersection")
         worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
