@@ -26,9 +26,11 @@ def set_up_workflow(wkf):
     wkf.output_dir = OUTPUT_PATH
     wkf.expression_matrix_file = '103118_SS_Data.tsv.gz'
     wkf.gene_metadata_file = "orfs.tsv"
+    wkf.gene_list_index = "SystematicName"
     wkf.tf_names_file = TF_NAMES
     wkf.expression_matrix_columns_are_genes = True
     wkf.extract_metadata_from_expression_matrix = True
+    wkf.expression_matrix_metadata = ['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode']
     wkf.split_gold_standard_for_crossvalidation = True
     wkf.cv_split_ratio = 0.5
     wkf.num_bootstraps = 5
