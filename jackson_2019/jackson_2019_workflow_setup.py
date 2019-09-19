@@ -27,6 +27,8 @@ def set_up_workflow(wkf):
     wkf.expression_matrix_file = '103118_SS_Data.tsv.gz'
     wkf.gene_metadata_file = "orfs.tsv"
     wkf.gene_list_index = "SystematicName"
+    wkf.gold_standard_file = "gold_standard.tsv"
+    wkf.priors_file = "gold_standard.tsv"
     wkf.tf_names_file = TF_NAMES
     wkf.expression_matrix_columns_are_genes = True
     wkf.extract_metadata_from_expression_matrix = True
