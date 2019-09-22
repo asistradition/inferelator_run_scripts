@@ -9,11 +9,12 @@ INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/e18_10x'
 OUTPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/v031/'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 TF_NAMES = "Mouse_TF.txt"
-EXPRESSION_DATA = "1M_neurons.tsv.gz"
+EXPRESSION_DATA = "1M_neurons_filtered_gene_bc_matrices_h5.h5"
+
+utils.Debug.set_verbose_level(1)
 
 
 def start_mpcontrol_dask(n_cores=N_CORES):
-    utils.Debug.set_verbose_level(1)
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.minimum_cores = n_cores
     MPControl.client.maximum_cores = n_cores
@@ -33,6 +34,7 @@ if __name__ == '__main__':
         worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
         worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, expression_matrix_file=EXPRESSION_DATA,
                               tf_names_file=TF_NAMES)
+        worker.set_file_properties(expression_matrix_columns_are_genes=True)
         worker.set_network_data_flags(use_no_prior=True, use_no_gold_standard=True)
         worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
         worker.tfa_driver = tfa.NoTFA
