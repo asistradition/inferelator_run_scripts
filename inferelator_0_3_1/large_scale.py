@@ -37,6 +37,7 @@ if __name__ == '__main__':
         worker.set_file_properties(expression_matrix_columns_are_genes=True)
         worker.set_network_data_flags(use_no_prior=True, use_no_gold_standard=True)
         worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
+        worker.set_count_minimum(0.05)
         worker.tfa_driver = tfa.NoTFA
         worker.append_to_path('output_dir', "1M_neuron_" + str(seed))
         worker.run()
