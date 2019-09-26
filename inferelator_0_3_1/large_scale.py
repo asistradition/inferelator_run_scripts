@@ -24,6 +24,7 @@ def start_mpcontrol_dask(n_cores=N_CORES):
     MPControl.client.add_worker_env_line('source ' + CONDA_ACTIVATE_PATH)
     MPControl.client.cluster_controller_options.append("-p ccb")
     MPControl.client.memory = "500GB"
+    MPControl.client.job_mem = "500GB"
     MPControl.connect()
 
 
