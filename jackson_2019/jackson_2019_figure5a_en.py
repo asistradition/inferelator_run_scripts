@@ -4,7 +4,7 @@ from inferelator import utils
 import os
 
 try:
-    from . import jackson_2019_workflow_setup as ws
+    from inferelator_0_3_1 import jackson_2019_workflow_setup as ws
 except ValueError:
     # Py2
     import imp
@@ -26,6 +26,7 @@ if __name__ == '__main__':
     utils.Debug.vprint("Generating Fig 5A", level=0)
     # Figure 5A: Shuffled Priors
     worker = ws.set_up_fig5a()
+    worker.cv_regression_type = "elasticnet"
     worker.append_to_path('output_dir', 'figure_5a_shuffled')
     worker.shuffle_prior_axis = 0
     worker.run()
@@ -33,6 +34,7 @@ if __name__ == '__main__':
 
     # Figure 5A: Random Data
     worker = ws.set_up_fig5a()
+    worker.cv_regression_type = "elasticnet"
     worker.append_to_path('output_dir', 'figure_5a_neg_data')
     worker.expression_matrix_file = '110518_SS_NEG_Data.tsv.gz'
     worker.run()
@@ -40,12 +42,14 @@ if __name__ == '__main__':
 
     # Figure 5A: No Imputation
     worker = ws.set_up_fig5a()
+    worker.cv_regression_type = "elasticnet"
     worker.append_to_path('output_dir', 'figure_5a_no_impute')
     worker.run()
     del worker
 
     # Figure 5A: MAGIC
     worker = ws.set_up_fig5a()
+    worker.cv_regression_type = "elasticnet"
     worker.append_to_path('output_dir', 'figure_5a_magic')
     worker.expression_matrix_file = 'MAGIC_DATA.tsv.gz'
     worker.preprocessing_workflow = list()
@@ -55,6 +59,7 @@ if __name__ == '__main__':
 
     # Figure 5A: scImpute
     worker = ws.set_up_fig5a()
+    worker.cv_regression_type = "elasticnet"
     worker.append_to_path('output_dir', 'figure_5a_scImpute')
     worker.expression_matrix_file = 'SCIMPUTE_DATA.tsv.gz'
     worker.run()
@@ -62,6 +67,7 @@ if __name__ == '__main__':
 
     # Figure 5A: VIPER
     worker = ws.set_up_fig5a()
+    worker.cv_regression_type = "elasticnet"
     worker.append_to_path('output_dir', 'figure_5a_VIPER')
     worker.expression_matrix_file = 'VIPER_DATA.tsv.gz'
     worker.run()
