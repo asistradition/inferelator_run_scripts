@@ -35,6 +35,7 @@ def set_up_mtl_workflow(wkf):
                            tasks_from_metadata=True,
                            meta_data_task_column="Condition")
     task.add_preprocess_step(single_cell.log2_data)
+    return wkf
 
 
 if __name__ == '__main__':
@@ -43,6 +44,7 @@ if __name__ == '__main__':
     # Figure 5D: MTL
     worker = ws.set_up_fig5a()
     worker = ws.yeastract(worker)
+    worker = set_up_mtl_workflow(worker)
     worker.append_to_path('output_dir', 'figure_5d_mtl_bbsr')
     worker.cv_workflow_type = "amusr"
     worker.cv_regression_type = ElasticNetByTaskRegressionWorkflow

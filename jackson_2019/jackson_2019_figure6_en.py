@@ -35,6 +35,7 @@ def set_up_mtl_workflow(wkf):
                            tasks_from_metadata=True,
                            meta_data_task_column="Condition")
     task.add_preprocess_step(single_cell.log2_data)
+    return wkf
 
 
 if __name__ == '__main__':
@@ -44,6 +45,7 @@ if __name__ == '__main__':
     worker = ws.set_up_workflow(workflow.inferelator_workflow(regression=ElasticNetByTaskRegressionWorkflow,
                                                               workflow="amusr"))
     worker = ws.yeastract(worker)
+    worker = set_up_mtl_workflow(worker)
     worker.append_to_path('output_dir', 'figure_6_final')
     worker.gold_standard_file = ws.YEASTRACT_PRIOR
     worker.split_gold_standard_for_crossvalidation = False
