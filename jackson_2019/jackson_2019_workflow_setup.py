@@ -34,7 +34,8 @@ def set_up_workflow(wkf):
                        tf_names_file=TF_NAMES)
     wkf.set_file_properties(extract_metadata_from_expression_matrix=True,
                             expression_matrix_metadata=EXPRESSION_MATRIX_METADATA,
-                            expression_matrix_columns_are_genes=True)
+                            expression_matrix_columns_are_genes=True,
+                            gene_list_index="SystematicName")
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
                                        cv_split_ratio=0.5)
     wkf.set_run_parameters(num_bootstraps=5)
