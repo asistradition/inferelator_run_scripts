@@ -1,4 +1,5 @@
-from inferelator import single_cell_cv_workflow
+from inferelator import workflow
+from inferelator import crossvalidation_workflow
 from inferelator import utils
 from inferelator.distributed.inferelator_mp import MPControl
 from inferelator.preprocessing import single_cell
@@ -6,6 +7,7 @@ from inferelator.preprocessing import single_cell
 N_CORES = 200
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
+EXPRESSION_MATRIX_METADATA = ['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode']
 
 YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 
@@ -22,41 +24,38 @@ def yeastract(wkf):
 
 
 def set_up_workflow(wkf):
-    wkf.input_dir = INPUT_DIR
-    wkf.output_dir = OUTPUT_PATH
-    wkf.expression_matrix_file = '103118_SS_Data.tsv.gz'
-    wkf.gene_metadata_file = "orfs.tsv"
-    wkf.gene_list_index = "SystematicName"
-    wkf.gold_standard_file = "gold_standard.tsv"
-    wkf.priors_file = "gold_standard.tsv"
-    wkf.tf_names_file = TF_NAMES
-    wkf.expression_matrix_columns_are_genes = True
-    wkf.extract_metadata_from_expression_matrix = True
-    wkf.expression_matrix_metadata = ['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode']
-    wkf.split_gold_standard_for_crossvalidation = True
-    wkf.cv_split_ratio = 0.5
-    wkf.num_bootstraps = 5
+
+    wkf.set_file_paths(input_dir=INPUT_DIR,
+                       output_dir=OUTPUT_PATH,
+                       expression_matrix_file='103118_SS_Data.tsv.gz',
+                       gene_metadata_file='orfs.tsv',
+                       gold_standard_file='gold_standard.tsv',
+                       priors_file='gold_standard.tsv',
+                       tf_names_file=TF_NAMES)
+    wkf.set_file_properties(extract_metadata_from_expression_matrix=True,
+                            expression_matrix_metadata=EXPRESSION_MATRIX_METADATA,
+                            expression_matrix_columns_are_genes=True)
+    wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
+                                       cv_split_ratio=0.5)
+    wkf.set_run_parameters(num_bootstraps=5)
+    wkf.set_count_minimum(0.05)
     wkf.add_preprocess_step(single_cell.log2_data)
-    wkf.count_minimum = 0.05
     return wkf
 
 
-def set_up_fig5a():
-    wkf = set_up_workflow(single_cell_cv_workflow.SingleCellSizeSampling())
-    wkf.random_seed = 1
-    wkf.seeds = list(range(42, 52))
-    wkf.sizes = [1]
-    wkf.sample_with_replacement = False
-    return wkf
+def set_up_fig5a(regression="bbsr"):
+    wkf = set_up_workflow(workflow.inferelator_workflow(regression=regression, workflow="single-cell"))
+    cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
+    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 62)))
+    return cv_wrap
 
 
-def set_up_fig5b():
-    wkf = set_up_workflow(single_cell_cv_workflow.SingleCellSizeSampling())
-    wkf.random_seed = 1
-    wkf.seeds = list(range(42, 62))
-    wkf.sizes = [0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 1]
-    wkf.sample_with_replacement = False
-    return wkf
+def set_up_fig5b(regression="bbsr"):
+    wkf = set_up_workflow(workflow.inferelator_workflow(regression=regression, workflow="single-cell"))
+    cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
+    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 62)))
+    cv_wrap.add_size_subsampling([0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 1], seed=8675309)
+    return cv_wrap
 
 
 def start_mpcontrol_dask(n_cores=N_CORES):

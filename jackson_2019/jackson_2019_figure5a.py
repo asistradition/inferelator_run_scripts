@@ -27,14 +27,14 @@ if __name__ == '__main__':
     # Figure 5A: Shuffled Priors
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_shuffled')
-    worker.shuffle_prior_axis = 0
+    worker.workflow.set_shuffle_parameters(shuffle_prior_axis=0)
     worker.run()
     del worker
 
     # Figure 5A: Random Data
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_neg_data')
-    worker.expression_matrix_file = '110518_SS_NEG_Data.tsv.gz'
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
     worker.run()
     del worker
 
@@ -47,22 +47,22 @@ if __name__ == '__main__':
     # Figure 5A: MAGIC
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_magic')
-    worker.expression_matrix_file = 'MAGIC_DATA.tsv.gz'
-    worker.preprocessing_workflow = list()
-    worker.count_minimum = None
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='MAGIC_DATA.tsv.gz')
+    worker.workflow.preprocessing_workflow = list()
+    worker.workflow.count_minimum = None
     worker.run()
     del worker
 
     # Figure 5A: scImpute
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_scImpute')
-    worker.expression_matrix_file = 'SCIMPUTE_DATA.tsv.gz'
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='SCIMPUTE_DATA.tsv.gz')
     worker.run()
     del worker
 
     # Figure 5A: VIPER
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_VIPER')
-    worker.expression_matrix_file = 'VIPER_DATA.tsv.gz'
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='VIPER_DATA.tsv.gz')
     worker.run()
     del worker

@@ -21,54 +21,54 @@ except ImportError:
 
 
 if __name__ == '__main__':
-    ws.start_mpcontrol_dask(60)
+    ws.start_mpcontrol_dask(80)
 
     utils.Debug.vprint("Generating Fig 5A", level=0)
     # Figure 5A: Shuffled Priors
-    worker = ws.set_up_fig5a()
-    worker.cv_regression_type = "elasticnet"
+    worker = ws.set_up_fig5a(regression="elasticnet")
+    worker.workflow.set_regression_parameters(l1_ratio=1, max_iter=2000)
     worker.append_to_path('output_dir', 'figure_5a_shuffled')
-    worker.shuffle_prior_axis = 0
+    worker.workflow.set_shuffle_parameters(shuffle_prior_axis=0)
     worker.run()
     del worker
 
     # Figure 5A: Random Data
-    worker = ws.set_up_fig5a()
-    worker.cv_regression_type = "elasticnet"
+    worker = ws.set_up_fig5a(regression="elasticnet")
+    worker.workflow.set_regression_parameters(l1_ratio=1, max_iter=2000)
     worker.append_to_path('output_dir', 'figure_5a_neg_data')
-    worker.expression_matrix_file = '110518_SS_NEG_Data.tsv.gz'
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
     worker.run()
     del worker
 
     # Figure 5A: No Imputation
-    worker = ws.set_up_fig5a()
-    worker.cv_regression_type = "elasticnet"
+    worker = ws.set_up_fig5a(regression="elasticnet")
+    worker.workflow.set_regression_parameters(l1_ratio=1, max_iter=2000)
     worker.append_to_path('output_dir', 'figure_5a_no_impute')
     worker.run()
     del worker
 
     # Figure 5A: MAGIC
-    worker = ws.set_up_fig5a()
-    worker.cv_regression_type = "elasticnet"
+    worker = ws.set_up_fig5a(regression="elasticnet")
+    worker.workflow.set_regression_parameters(l1_ratio=1, max_iter=2000)
     worker.append_to_path('output_dir', 'figure_5a_magic')
-    worker.expression_matrix_file = 'MAGIC_DATA.tsv.gz'
-    worker.preprocessing_workflow = list()
-    worker.count_minimum = None
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='MAGIC_DATA.tsv.gz')
+    worker.workflow.preprocessing_workflow = list()
+    worker.workflow.count_minimum = None
     worker.run()
     del worker
 
     # Figure 5A: scImpute
     worker = ws.set_up_fig5a()
-    worker.cv_regression_type = "elasticnet"
+    worker.workflow.set_regression_parameters(l1_ratio=1, max_iter=2000)
     worker.append_to_path('output_dir', 'figure_5a_scImpute')
-    worker.expression_matrix_file = 'SCIMPUTE_DATA.tsv.gz'
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='SCIMPUTE_DATA.tsv.gz')
     worker.run()
     del worker
 
     # Figure 5A: VIPER
-    worker = ws.set_up_fig5a()
-    worker.cv_regression_type = "elasticnet"
+    worker = ws.set_up_fig5a(regression="elasticnet")
+    worker.workflow.set_regression_parameters(l1_ratio=1, max_iter=2000)
     worker.append_to_path('output_dir', 'figure_5a_VIPER')
-    worker.expression_matrix_file = 'VIPER_DATA.tsv.gz'
+    worker.workflow.wkf.set_file_paths(expression_matrix_file='VIPER_DATA.tsv.gz')
     worker.run()
     del worker
