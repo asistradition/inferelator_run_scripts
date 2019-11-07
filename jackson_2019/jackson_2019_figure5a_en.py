@@ -21,7 +21,7 @@ except ImportError:
 
 
 if __name__ == '__main__':
-    ws.start_mpcontrol_dask(80)
+    ws.start_mpcontrol_dask(40)
 
     utils.Debug.vprint("Generating Fig 5A", level=0)
     # Figure 5A: Shuffled Priors
