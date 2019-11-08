@@ -21,9 +21,16 @@ except ImportError:
 
 
 if __name__ == '__main__':
-    ws.start_mpcontrol_dask(40)
+    ws.start_mpcontrol_dask(60)
 
     utils.Debug.vprint("Generating Fig 5A", level=0)
+    # Figure 5A: No Imputation
+    worker = ws.set_up_fig5a(regression="elasticnet")
+    worker.workflow.set_regression_parameters(l1_ratio=[0.9, 0.95, 1], max_iter=2000, min_coef=0)
+    worker.append_to_path('output_dir', 'en_figure_5a_no_impute')
+    worker.run()
+    del worker
+
     # Figure 5A: Shuffled Priors
     worker = ws.set_up_fig5a(regression="elasticnet")
     worker.workflow.set_regression_parameters(l1_ratio=[0.9, 0.95, 1], max_iter=2000, min_coef=0)
@@ -37,13 +44,6 @@ if __name__ == '__main__':
     worker.workflow.set_regression_parameters(l1_ratio=[0.9, 0.95, 1], max_iter=2000, min_coef=0)
     worker.append_to_path('output_dir', 'en_figure_5a_neg_data')
     worker.workflow.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
-    worker.run()
-    del worker
-
-    # Figure 5A: No Imputation
-    worker = ws.set_up_fig5a(regression="elasticnet")
-    worker.workflow.set_regression_parameters(l1_ratio=[0.9, 0.95, 1], max_iter=2000, min_coef=0)
-    worker.append_to_path('output_dir', 'en_figure_5a_no_impute')
     worker.run()
     del worker
 

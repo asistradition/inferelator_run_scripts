@@ -24,6 +24,12 @@ if __name__ == '__main__':
     ws.start_mpcontrol_dask(60)
 
     utils.Debug.vprint("Generating Fig 5A", level=0)
+    # Figure 5A: No Imputation
+    worker = ws.set_up_fig5a()
+    worker.append_to_path('output_dir', 'figure_5a_no_impute')
+    worker.run()
+    del worker
+
     # Figure 5A: Shuffled Priors
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_shuffled')
@@ -35,12 +41,6 @@ if __name__ == '__main__':
     worker = ws.set_up_fig5a()
     worker.append_to_path('output_dir', 'figure_5a_neg_data')
     worker.workflow.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
-    worker.run()
-    del worker
-
-    # Figure 5A: No Imputation
-    worker = ws.set_up_fig5a()
-    worker.append_to_path('output_dir', 'figure_5a_no_impute')
     worker.run()
     del worker
 
