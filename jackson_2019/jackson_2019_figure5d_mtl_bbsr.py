@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     worker = workflow.inferelator_workflow(regression="amusr", workflow="amusr")
     worker.set_file_paths(input_dir=ws.INPUT_DIR,
-                          output_dir=ws.OUTPUT_DIR,
+                          output_dir=ws.OUTPUT_PATH,
                           gold_standard_file="gold_standard.tsv",
                           gene_metadata_file="orfs.tsv",
                           priors_file=ws.YEASTRACT_PRIOR,
