@@ -55,7 +55,7 @@ def set_up_fig5b(regression="bbsr"):
     wkf = set_up_workflow(workflow.inferelator_workflow(regression=regression, workflow="single-cell"))
     cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
     cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 62)))
-    cv_wrap.add_size_subsampling([0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 1], seed=8675309)
+    cv_wrap.add_size_subsampling([0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 1], seed=86)
     return cv_wrap
 
 
