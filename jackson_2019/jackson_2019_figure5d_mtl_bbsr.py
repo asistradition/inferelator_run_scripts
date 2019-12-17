@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # Figure 5D: MTL
 
-    worker = workflow.inferelator_workflow(regression="amusr", workflow="amusr")
+    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="amusr")
     worker.set_file_paths(input_dir=ws.INPUT_DIR,
                           output_dir=ws.OUTPUT_PATH,
                           gold_standard_file="gold_standard.tsv",
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     worker.set_run_parameters(num_bootstraps=5)
     worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
 
-    worker.append_to_path('output_dir', "fig5d_mtl_amusr")
+    worker.append_to_path('output_dir', "fig5d_mtl_bbsr")
 
     # Jackson single cell task
     task = worker.create_task(task_name="Jackson_2019",
