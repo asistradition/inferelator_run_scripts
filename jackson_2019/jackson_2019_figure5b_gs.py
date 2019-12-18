@@ -1,3 +1,5 @@
+from inferelator import workflow
+
 # Ugly hack for relative import from __main__ because fucking python, am I right?
 import os
 
@@ -17,10 +19,14 @@ except ImportError:
     filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "jackson_2019_workflow_setup.py")
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
+set_up_workflow = ws.set_up_workflow
+set_up_fig5b = ws.set_up_fig5b
+
 if __name__ == '__main__':
     ws.start_mpcontrol_dask(40)
 
     # Figure 5B: Gold Standard
-    worker = ws.set_up_fig5b()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
     worker.append_to_path('output_dir', 'figure_5b_gold_standard_cv')
-    worker.run()
+
+    set_up_fig5b(worker).run()

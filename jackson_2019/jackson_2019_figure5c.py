@@ -1,4 +1,5 @@
-from inferelator import single_cell_cv_workflow
+from inferelator import workflow
+from inferelator import crossvalidation_workflow
 
 # Ugly hack for relative import from __main__ because fucking python, am I right?
 import os
@@ -18,13 +19,21 @@ except ImportError:
 
     filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "jackson_2019_workflow_setup.py")
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
+
+
+set_up_workflow = ws.set_up_workflow
+
 if __name__ == '__main__':
     ws.start_mpcontrol_dask(40)
 
-    worker = ws.set_up_workflow(single_cell_cv_workflow.SingleCellDropoutConditionSampling())
+    # Figure 5C: Condition Specific
+
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
     worker.append_to_path('output_dir', 'figure_5c_conditions')
-    worker.sample_batches_to_size = 500
-    worker.drop_column = "Condition"
-    worker.model_dropouts = False
-    worker.seeds = list(range(42, 52))
-    worker.run()
+
+    cv_wrap = crossvalidation_workflow.CrossValidationManager(worker)
+    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 52)))
+    cv_wrap.add_grouping_dropin("Condition", group_size=500)
+
+    cv_wrap.run()
+    del cv_wrap

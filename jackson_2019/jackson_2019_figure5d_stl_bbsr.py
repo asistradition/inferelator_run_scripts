@@ -1,4 +1,6 @@
 from inferelator import utils
+from inferelator import workflow
+from inferelator import crossvalidation_workflow
 
 # Ugly hack for relative import from __main__ because fucking python, am I right?
 import os
@@ -19,14 +21,22 @@ except ImportError:
     filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "jackson_2019_workflow_setup.py")
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
+set_up_workflow = ws.set_up_workflow
+yeastract = ws.yeastract
+
 if __name__ == '__main__':
     ws.start_mpcontrol_dask(60)
 
     utils.Debug.vprint("Generating Fig 5D", level=0)
-    # Figure 5D: STL
-    worker = ws.set_up_fig5a()
-    worker = ws.yeastract(worker)
+
+    # Figure 5D: Single Task Learning
+
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    yeastract(worker)
     worker.append_to_path('output_dir', 'figure_5d_stl')
-    worker.seeds = list(range(52, 62))
-    worker.run()
-    del worker
+
+    cv_wrap = crossvalidation_workflow.CrossValidationManager(worker)
+    cv_wrap.add_gridsearch_parameter('random_seed', list(range(52, 62)))
+    cv_wrap.run()
+
+    del cv_wrap

@@ -1,3 +1,5 @@
+from inferelator import workflow
+
 # Ugly hack for relative import from __main__ because fucking python, am I right?
 import os
 
@@ -17,14 +19,15 @@ except ImportError:
     filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "jackson_2019_workflow_setup.py")
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
+set_up_workflow = ws.set_up_workflow
+set_up_fig5b = ws.set_up_fig5b
+
 if __name__ == '__main__':
     ws.start_mpcontrol_dask(40)
 
     # Figure 5B: No Priors
-    worker = ws.set_up_fig5b()
-    worker.tf_names_file = ws.YEASTRACT_TF_NAMES
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_tfa(tfa_driver=False)
     worker.append_to_path('output_dir', 'figure_5b_no_priors')
-    from inferelator.preprocessing.tfa import NoTFA
 
-    worker.tfa_driver = NoTFA
-    worker.run()
+    set_up_fig5b(worker).run()

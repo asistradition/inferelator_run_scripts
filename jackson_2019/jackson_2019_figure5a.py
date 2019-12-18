@@ -1,4 +1,5 @@
 from inferelator import utils
+from inferelator import workflow
 
 # Ugly hack for relative import from __main__ because fucking python, am I right?
 import os
@@ -20,49 +21,53 @@ except ImportError:
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
 
+set_up_workflow = ws.set_up_workflow
+set_up_fig5a = ws.set_up_fig5a
+
+
 if __name__ == '__main__':
     ws.start_mpcontrol_dask(60)
 
     utils.Debug.vprint("Generating Fig 5A", level=0)
+
     # Figure 5A: No Imputation
-    worker = ws.set_up_fig5a()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
     worker.append_to_path('output_dir', 'figure_5a_no_impute')
-    worker.run()
-    del worker
+
+    set_up_fig5a(worker).run()
 
     # Figure 5A: Shuffled Priors
-    worker = ws.set_up_fig5a()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_shuffle_parameters(shuffle_prior_axis=0)
     worker.append_to_path('output_dir', 'figure_5a_shuffled')
-    worker.workflow.set_shuffle_parameters(shuffle_prior_axis=0)
-    worker.run()
-    del worker
+
+    set_up_fig5a(worker).run()
 
     # Figure 5A: Random Data
-    worker = ws.set_up_fig5a()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
     worker.append_to_path('output_dir', 'figure_5a_neg_data')
-    worker.workflow.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
-    worker.run()
-    del worker
+
+    set_up_fig5a(worker).run()
 
     # Figure 5A: MAGIC
-    worker = ws.set_up_fig5a()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_file_paths(expression_matrix_file='MAGIC_DATA.tsv.gz')
+    worker.preprocessing_workflow = list()
     worker.append_to_path('output_dir', 'figure_5a_magic')
-    worker.workflow.set_file_paths(expression_matrix_file='MAGIC_DATA.tsv.gz')
-    worker.workflow.preprocessing_workflow = list()
-    worker.workflow.count_minimum = None
-    worker.run()
-    del worker
+
+    set_up_fig5a(worker).run()
 
     # Figure 5A: scImpute
-    worker = ws.set_up_fig5a()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_file_paths(expression_matrix_file='SCIMPUTE_DATA.tsv.gz')
     worker.append_to_path('output_dir', 'figure_5a_scImpute')
-    worker.workflow.set_file_paths(expression_matrix_file='SCIMPUTE_DATA.tsv.gz')
-    worker.run()
-    del worker
+
+    set_up_fig5a(worker).run()
 
     # Figure 5A: VIPER
-    worker = ws.set_up_fig5a()
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_file_paths(expression_matrix_file='VIPER_DATA.tsv.gz')
     worker.append_to_path('output_dir', 'figure_5a_VIPER')
-    worker.workflow.set_file_paths(expression_matrix_file='VIPER_DATA.tsv.gz')
-    worker.run()
-    del worker
+
+    set_up_fig5a(worker).run()

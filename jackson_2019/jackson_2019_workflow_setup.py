@@ -1,11 +1,10 @@
-from inferelator import workflow
 from inferelator import crossvalidation_workflow
 from inferelator import utils
 from inferelator.distributed.inferelator_mp import MPControl
 from inferelator.preprocessing import single_cell
 
-N_CORES = 200
-INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
+N_CORES = 60
+
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 EXPRESSION_MATRIX_METADATA = ['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode']
 
@@ -14,13 +13,12 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
-OUTPUT_PATH = '~/jackson_2019_inferelator/'
+INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/jackson_2019_inferelator_v032'
 
 
 def yeastract(wkf):
-    wkf.tf_names_file = YEASTRACT_TF_NAMES
-    wkf.priors_file = YEASTRACT_PRIOR
-    return wkf
+    wkf.set_file_paths(tf_names_file=YEASTRACT_TF_NAMES, priors_file=YEASTRACT_PRIOR)
 
 
 def set_up_workflow(wkf):
@@ -44,17 +42,15 @@ def set_up_workflow(wkf):
     return wkf
 
 
-def set_up_fig5a(regression="bbsr"):
-    wkf = set_up_workflow(workflow.inferelator_workflow(regression=regression, workflow="single-cell"))
+def set_up_fig5a(wkf):
     cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
-    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 62)))
+    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 52)))
     return cv_wrap
 
 
-def set_up_fig5b(regression="bbsr"):
-    wkf = set_up_workflow(workflow.inferelator_workflow(regression=regression, workflow="single-cell"))
+def set_up_fig5b(wkf):
     cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
-    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 62)))
+    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 52)))
     cv_wrap.add_size_subsampling([0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 1], seed=86)
     return cv_wrap
 

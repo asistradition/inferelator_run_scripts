@@ -19,19 +19,20 @@ except ImportError:
     filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "jackson_2019_workflow_setup.py")
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
+set_up_workflow = ws.set_up_workflow
+yeastract = ws.yeastract
+
 if __name__ == '__main__':
     ws.start_mpcontrol_dask(200)
 
     # Figure 6: Final Network
-    worker = ws.set_up_workflow(workflow.inferelator_workflow(regression="amusr", workflow="amusr"))
-    worker = ws.yeastract(worker)
+
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="amusr", workflow="multitask"))
+    yeastract(worker)
+    worker.set_file_paths(gold_standard_file="YEASTRACT_Both_20181118.tsv")
+    worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=False, cv_split_ratio=None)
+    worker.set_run_parameters(num_bootstraps=50, random_seed=100)
     worker.append_to_path('output_dir', 'figure_6_final')
-    worker.gold_standard_file = ws.YEASTRACT_PRIOR
-    worker.split_gold_standard_for_crossvalidation = False
-    worker.split_priors_for_gold_standard = False
-    worker.cv_split_ratio = None
-    worker.num_bootstraps = 50
-    worker.random_seed = 100
-    worker.target_expression_filter = "union"
-    worker.regulator_expression_filter = "intersection"
-    worker.run()
+
+    final_network = worker.run()
+    del worker
