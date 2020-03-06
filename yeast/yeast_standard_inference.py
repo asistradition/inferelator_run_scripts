@@ -38,12 +38,14 @@ if __name__ == '__main__':
     set_up_fig5a(worker).run()
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.preprocessing_workflow = list()
     worker.append_to_path('output_dir', 'dewakss')
 
     set_up_fig5a(worker).run()
 
     # Figure 5A: Shuffled Priors
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.preprocessing_workflow = list()
     worker.set_shuffle_parameters(shuffle_prior_axis=0)
     worker.append_to_path('output_dir', 'shuffle')
 
@@ -60,6 +62,7 @@ if __name__ == '__main__':
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
     yeastract(worker)
+    worker.preprocessing_workflow = list()
     worker.append_to_path('output_dir', 'yeastract')
 
     set_up_fig5a(worker).run()
