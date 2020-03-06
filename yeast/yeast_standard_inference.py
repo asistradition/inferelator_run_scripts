@@ -10,7 +10,7 @@ except ValueError:
     # Py2
     import imp
 
-    (f, p, d) = imp.find_module("jackson_2019_workflow_setup",
+    (f, p, d) = imp.find_module("yeast_workflow_setup",
                                 [os.path.join(os.path.dirname(os.path.realpath(__file__)))])
     ws = imp.load_module("ws", f, p, d)
 except ImportError:
