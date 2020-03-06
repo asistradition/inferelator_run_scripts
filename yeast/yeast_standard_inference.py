@@ -17,7 +17,7 @@ except ImportError:
     # Py3
     import importlib.machinery
 
-    filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "jackson_2019_workflow_setup.py")
+    filename = os.path.join(os.path.dirname(os.path.realpath(__file__)), "yeast_workflow_setup.py")
     ws = importlib.machinery.SourceFileLoader("ws", filename).load_module()
 
 
