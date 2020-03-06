@@ -31,9 +31,14 @@ if __name__ == '__main__':
 
     utils.Debug.vprint("Generating Fig 5A", level=0)
 
-    # Figure 5A: No Imputation
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_file_paths(expression_matrix_file='103118_SS_Data.tsv.gz')
     worker.append_to_path('output_dir', 'no_impute')
+
+    set_up_fig5a(worker).run()
+
+    worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.append_to_path('output_dir', 'dewakss')
 
     set_up_fig5a(worker).run()
 
@@ -56,3 +61,5 @@ if __name__ == '__main__':
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
     yeastract(worker)
     worker.append_to_path('output_dir', 'yeastract')
+
+    set_up_fig5a(worker).run()
