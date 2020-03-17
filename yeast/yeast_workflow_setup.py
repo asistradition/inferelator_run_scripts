@@ -25,7 +25,7 @@ def set_up_workflow(wkf):
 
     wkf.set_file_paths(input_dir=INPUT_DIR,
                        output_dir=OUTPUT_PATH,
-                       expression_matrix_file='DEWAKSS_2020_03_05.tsv.gz',
+                       expression_matrix_file='103118_SS_Data.tsv.gz',
                        gene_metadata_file='orfs.tsv',
                        gold_standard_file='gold_standard.tsv',
                        priors_file='gold_standard.tsv',
