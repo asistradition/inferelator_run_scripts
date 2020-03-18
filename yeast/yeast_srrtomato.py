@@ -32,17 +32,21 @@ if __name__ == '__main__':
     utils.Debug.vprint("Generating Fig 5A", level=0)
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
-    worker.set_file_paths(tf_names_file="Scer_cisbp_TFs.txt", priors_file="Scer_ATAC_binary_prior.tsv")
-    worker.append_to_path('output_dir', 'yeastract')
+    worker.set_file_paths(tf_names_file="Scer_cisbp_TFs.txt", priors_file="Scer_ATAC_binary_prior.tsv",
+                          output_dir='/mnt/ceph/users/cjackson/inferelator_srr')
+    worker.append_to_path('output_dir', 'srrtomato')
 
     set_up_fig5a(worker).run()
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
-    worker.append_to_path('output_dir', 'no_impute')
+    worker.set_file_paths(output_dir='/mnt/ceph/users/cjackson/inferelator_srr')
+    worker.append_to_path('output_dir', 'gold_standard')
 
     set_up_fig5a(worker).run()
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
+    worker.set_file_paths(tf_names_file="Scer_cisbp_TFs.txt", priors_file="Scer_ATAC_binary_prior.tsv",
+                          output_dir='/mnt/ceph/users/cjackson/inferelator_srr')
     worker.set_shuffle_parameters(shuffle_prior_axis=0)
     worker.append_to_path('output_dir', 'shuffle')
 
@@ -50,7 +54,8 @@ if __name__ == '__main__':
 
     # Figure 5A: Random Data
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
-    worker.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz')
+    worker.set_file_paths(expression_matrix_file='110518_SS_NEG_Data.tsv.gz',
+                          output_dir='/mnt/ceph/users/cjackson/inferelator_srr')
     worker.append_to_path('output_dir', 'noise')
 
     set_up_fig5a(worker).run()
