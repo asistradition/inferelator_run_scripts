@@ -32,8 +32,8 @@ if __name__ == '__main__':
     utils.Debug.vprint("Generating Fig 5A", level=0)
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
-    worker.set_file_paths(expression_matrix_file="Jackson2019_pipeline_computed_all_distance_euclidean.h5ad",
-                          output_dir='/mnt/ceph/users/cjackson/inferelator_dewax')
+    worker.set_file_paths(output_dir='/mnt/ceph/users/cjackson/inferelator_dewax')
+    worker.set_expression_file(h5ad="Jackson2019_pipeline_computed_all_distance_euclidean.h5ad")
     worker.append_to_path('output_dir', 'dewaxed')
     worker.preprocessing_workflow = list()
     worker.set_regression_parameters(ordinary_least_squares_only=True)
@@ -48,8 +48,8 @@ if __name__ == '__main__':
     set_up_fig5a(worker).run()
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
-    worker.set_file_paths(expression_matrix_file="Jackson2019_pipeline_computed_all_distance_euclidean.h5ad",
-                          output_dir='/mnt/ceph/users/cjackson/inferelator_dewax')
+    worker.set_file_paths(output_dir='/mnt/ceph/users/cjackson/inferelator_dewax')
+    worker.set_expression_file(h5ad="Jackson2019_pipeline_computed_all_distance_euclidean.h5ad")
     worker.append_to_path('output_dir', 'dewaxed_yeastract')
     worker.preprocessing_workflow = list()
     worker.set_regression_parameters(ordinary_least_squares_only=True)
@@ -58,8 +58,8 @@ if __name__ == '__main__':
     set_up_fig5a(worker).run()
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
-    worker.set_file_paths(expression_matrix_file="Jackson2019_pipeline_computed_all_distance_euclidean.h5ad",
-                          output_dir='/mnt/ceph/users/cjackson/inferelator_dewax')
+    worker.set_file_paths(output_dir='/mnt/ceph/users/cjackson/inferelator_dewax')
+    worker.set_expression_file(h5ad="Jackson2019_pipeline_computed_all_distance_euclidean.h5ad")
     worker.set_shuffle_parameters(shuffle_prior_axis=0)
     worker.preprocessing_workflow = list()
     worker.append_to_path('output_dir', 'shuffle')
