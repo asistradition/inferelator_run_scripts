@@ -37,6 +37,8 @@ if __name__ == '__main__':
     worker.append_to_path('output_dir', 'yeastract')
     worker.set_regression_parameters(ordinary_least_squares_only=True)
 
+    set_up_fig5a(worker).run()
+
 """
     worker = set_up_workflow(workflow.inferelator_workflow(regression="bbsr", workflow="single-cell"))
     worker.set_file_paths(output_dir='/mnt/ceph/users/cjackson/inferelator_srr')
