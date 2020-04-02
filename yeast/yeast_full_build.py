@@ -33,6 +33,7 @@ if __name__ == '__main__':
 
     worker = set_up_workflow(workflow.inferelator_workflow(regression="amusr", workflow="multitask"))
     yeastract(worker)
+    worker.preprocessing_workflow = list()
     worker.set_file_paths(gold_standard_file="YEASTRACT_Both_20181118.tsv")
     worker.set_file_paths(output_dir='/mnt/ceph/users/cjackson/inferelator_full_build')
     worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=False, cv_split_ratio=None)
