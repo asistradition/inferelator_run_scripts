@@ -9,7 +9,7 @@ INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/e18_10x'
 OUTPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/v031/'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 TF_NAMES = "Mouse_TF.txt"
-EXPRESSION_DATA = "1M_neurons_filtered_gene_bc_matrices_h5.h5"
+EXPRESSION_DATA = "1M_neurons_filtered_gene_bc_matrices_h5.h5ad"
 
 utils.Debug.set_verbose_level(1)
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
     for seed in range(42, 52):
         worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
         worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, tf_names_file=TF_NAMES)
-        worker.set_expression_file(hdf5=EXPRESSION_DATA)
+        worker.set_expression_file(h5ad=EXPRESSION_DATA)
         worker.set_file_properties(expression_matrix_columns_are_genes=True)
         worker.set_network_data_flags(use_no_prior=True, use_no_gold_standard=True)
         worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
