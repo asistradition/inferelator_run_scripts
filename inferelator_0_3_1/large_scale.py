@@ -33,8 +33,8 @@ if __name__ == '__main__':
 
     for seed in range(42, 52):
         worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
-        worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, expression_matrix_file=EXPRESSION_DATA,
-                              tf_names_file=TF_NAMES)
+        worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, tf_names_file=TF_NAMES)
+        worker.set_expression_file(hdf5=EXPRESSION_DATA)
         worker.set_file_properties(expression_matrix_columns_are_genes=True)
         worker.set_network_data_flags(use_no_prior=True, use_no_gold_standard=True)
         worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
