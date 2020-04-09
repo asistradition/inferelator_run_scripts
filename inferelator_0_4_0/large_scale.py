@@ -6,7 +6,7 @@ from inferelator.preprocessing import tfa
 
 N_CORES = 100
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/e18_10x'
-OUTPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/v031/'
+OUTPUT_DIR = '/mnt/ceph/users/cjackson/e18_10x/'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 TF_NAMES = "Mouse_TF.txt"
 EXPRESSION_DATA = "1M_neurons_filtered_gene_bc_matrices_h5.h5ad"
