@@ -32,7 +32,7 @@ if __name__ == '__main__':
     start_mpcontrol_dask(100)
 
     for seed in range(42, 52):
-        worker = workflow.inferelator_workflow(regression="stars", workflow="single-cell")
+        worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
         worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, tf_names_file=TF_NAMES,
                               priors_file="SRR695628X_prior.tsv", gold_standard_file="SRR695628X_prior.tsv")
         worker.set_expression_file(h5ad=EXPRESSION_DATA)
