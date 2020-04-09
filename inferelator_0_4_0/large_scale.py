@@ -17,6 +17,7 @@ utils.Debug.set_verbose_level(1)
 def start_mpcontrol_dask(n_cores=N_CORES):
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.job_cores = 28
+    MPControl.client.processes = 28
     MPControl.client.minimum_cores = n_cores
     MPControl.client.maximum_cores = n_cores
     MPControl.client.walltime = '48:00:00'
