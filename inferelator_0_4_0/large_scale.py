@@ -16,6 +16,7 @@ utils.Debug.set_verbose_level(1)
 
 def start_mpcontrol_dask(n_cores=N_CORES):
     MPControl.set_multiprocess_engine("dask-cluster")
+    MPControl.client.job_cores = 28
     MPControl.client.minimum_cores = n_cores
     MPControl.client.maximum_cores = n_cores
     MPControl.client.walltime = '48:00:00'
@@ -29,7 +30,7 @@ def start_mpcontrol_dask(n_cores=N_CORES):
 
 
 if __name__ == '__main__':
-    start_mpcontrol_dask(100)
+    start_mpcontrol_dask(112)
 
     for seed in range(42, 52):
         worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
