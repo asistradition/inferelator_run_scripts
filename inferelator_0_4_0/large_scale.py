@@ -37,9 +37,10 @@ if __name__ == '__main__':
                               priors_file="SRR695628X_prior.tsv", gold_standard_file="SRR695628X_prior.tsv")
         worker.set_expression_file(h5ad=EXPRESSION_DATA)
         worker.set_file_properties(expression_matrix_columns_are_genes=True)
+        worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
         worker.set_run_parameters(num_bootstraps=5, random_seed=seed)
         worker.set_count_minimum(0.05)
-        worker.tfa_driver = tfa.NoTFA
+        worker.add_preprocess_step(single_cell.log2_data)
         worker.append_to_path('output_dir', "1M_neuron_" + str(seed))
         worker.run()
 
