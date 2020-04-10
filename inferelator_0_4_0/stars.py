@@ -16,7 +16,8 @@ utils.Debug.set_verbose_level(1)
 
 if __name__ == '__main__':
     MPControl.set_multiprocess_engine("dask-cluster")
-    MPControl.client.use_default_configuration("rusty", n_jobs=3)
+    MPControl.client.use_default_configuration("rusty_ccb", n_jobs=3)
+    MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
     MPControl.connect()
 
     worker = workflow.inferelator_workflow(regression="stars", workflow="single-cell")
