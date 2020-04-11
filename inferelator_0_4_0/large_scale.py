@@ -10,6 +10,7 @@ OUTPUT_DIR = '/mnt/ceph/users/cjackson/e18_10x/'
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 TF_NAMES = "Mouse_TF.txt"
 EXPRESSION_DATA = "1M_neurons_filtered_gene_bc_matrices_h5.h5ad"
+PRIORS_FILE = "SRR695628X_prior.tsv"
 
 utils.Debug.set_verbose_level(1)
 
@@ -22,7 +23,7 @@ if __name__ == '__main__':
 
     worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
     worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, tf_names_file=TF_NAMES,
-                          priors_file="SRR695628X_prior.tsv", gold_standard_file="SRR695628X_prior.tsv")
+                          priors_file=PRIORS_FILE, gold_standard_file=PRIORS_FILE)
     worker.set_expression_file(h5ad=EXPRESSION_DATA)
     worker.set_file_properties(expression_matrix_columns_are_genes=True)
     worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
