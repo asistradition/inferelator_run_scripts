@@ -14,6 +14,38 @@ YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 utils.Debug.set_verbose_level(1)
 
+
+def single_cell_setup(wkf):
+    wkf.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, gold_standard_file="gold_standard.tsv",
+                       gene_metadata_file="orfs.tsv", priors_file=YEASTRACT_PRIOR,
+                       tf_names_file=YEASTRACT_TF_NAMES)
+    wkf.set_expression_file(tsv="103118_SS_Data.tsv.gz")
+    wkf.set_file_properties(gene_list_index="SystematicName", extract_metadata_from_expression_matrix=True,
+                            expression_matrix_metadata=['Genotype', 'Genotype_Group', 'Replicate', 'Condition',
+                                                        'tenXBarcode'])
+    wkf.set_run_parameters(num_bootstraps=5)
+    wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
+
+    wkf.append_to_path('output_dir', "single-cell")
+    wkf.set_count_minimum(0.05)
+    wkf.add_preprocess_step(single_cell.log2_data)
+
+
+def calico_setup(wkf):
+    wkf.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, gold_standard_file="gold_standard.tsv",
+                       gene_metadata_file="orfs.tsv", priors_file=YEASTRACT_PRIOR,
+                       tf_names_file=YEASTRACT_TF_NAMES)
+    wkf.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
+    wkf.set_file_properties(gene_list_index="SystematicName",
+                            extract_metadata_from_expression_matrix=True,
+                            expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
+                            metadata_handler="nonbranching")
+    wkf.set_run_parameters(num_bootstraps=5)
+    wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
+
+    wkf.append_to_path('output_dir', "yeast_calico")
+
+
 if __name__ == '__main__':
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_ccb", n_jobs=3)
@@ -21,18 +53,7 @@ if __name__ == '__main__':
     MPControl.connect()
 
     worker = workflow.inferelator_workflow(regression="stars", workflow="single-cell")
-    worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, gold_standard_file="gold_standard.tsv",
-                          gene_metadata_file="orfs.tsv", priors_file=YEASTRACT_PRIOR,
-                          tf_names_file=YEASTRACT_TF_NAMES)
-    worker.set_expression_file(tsv="103118_SS_Data.tsv.gz")
-    worker.set_file_properties(gene_list_index="SystematicName", extract_metadata_from_expression_matrix=True,
-                               expression_matrix_metadata=['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode'])
-    worker.set_run_parameters(num_bootstraps=5)
-    worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
-
-    worker.append_to_path('output_dir', "single-cell")
-    worker.set_count_minimum(0.05)
-    worker.add_preprocess_step(single_cell.log2_data)
+    single_cell_setup(worker)
 
     # Create a crossvalidation wrapper
     cv_wrap = CrossValidationManager(worker)
@@ -41,22 +62,12 @@ if __name__ == '__main__':
     cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 52)))
 
     # Run
-    cv_wrap.run()
+    # cv_wrap.run()
     del worker
     del cv_wrap
 
     worker = workflow.inferelator_workflow(regression="stars", workflow="tfa")
-    worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, gold_standard_file="gold_standard.tsv",
-                          gene_metadata_file="orfs.tsv", priors_file=YEASTRACT_PRIOR,
-                          tf_names_file=YEASTRACT_TF_NAMES)
-    worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
-    worker.set_file_properties(gene_list_index="SystematicName",
-                               extract_metadata_from_expression_matrix=True,
-                               expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
-                               metadata_handler="nonbranching")
-    worker.set_task_filters(target_expression_filter="union", regulator_expression_filter="intersection")
-    worker.set_run_parameters(num_bootstraps=5)
-    worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
+    calico_setup(worker)
 
     worker.append_to_path('output_dir', "yeast_calico")
 
@@ -70,4 +81,3 @@ if __name__ == '__main__':
     cv_wrap.run()
     del worker
     del cv_wrap
-
