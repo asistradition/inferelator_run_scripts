@@ -28,7 +28,7 @@ if __name__ == '__main__':
     worker.set_file_properties(expression_matrix_columns_are_genes=True)
     worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
     worker.set_run_parameters(num_bootstraps=5)
-    worker.set_count_minimum(0.05)
+    worker.set_count_minimum(0.2)
     worker.add_preprocess_step(single_cell.log2_data)
     worker.append_to_path('output_dir', "bbsr")
     worker.run()
