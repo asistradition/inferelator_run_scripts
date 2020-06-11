@@ -29,7 +29,6 @@ if __name__ == '__main__':
 wkf = inferelator_workflow("bbsr", VelocityWorkflow)
 wkf.set_file_paths(input_dir=INPUT_DIR,
                    output_dir=OUTPUT_PATH,
-                   gene_metadata_file='orfs.tsv',
                    gold_standard_file='gold_standard.tsv',
                    priors_file='gold_standard.tsv',
                    tf_names_file=TF_NAMES)
