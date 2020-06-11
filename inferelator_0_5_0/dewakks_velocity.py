@@ -27,6 +27,7 @@ if __name__ == '__main__':
     MPControl.client.use_default_configuration("rusty_preempt")
     MPControl.client.set_job_size_params(n_jobs=1)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
+    MPControl.connect()
 
 wkf = inferelator_workflow("bbsr", VelocityWorkflow)
 wkf.set_file_paths(input_dir=INPUT_DIR,
