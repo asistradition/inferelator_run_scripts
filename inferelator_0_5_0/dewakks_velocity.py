@@ -20,7 +20,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/jackson_2019_inferelator_v050'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/jackson_2019_inferelator_v050/tau43'
 
 if __name__ == '__main__':
     MPControl.set_multiprocess_engine("dask-cluster")
@@ -41,4 +41,9 @@ wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
 wkf.set_run_parameters(num_bootstraps=5)
 wkf.set_count_minimum(0.05)
 wkf.add_preprocess_step(single_cell.log2_data)
-wkf.run()
+wkf.tau = 43.28
+
+cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
+cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 52)))
+
+cv_wrap.run()
