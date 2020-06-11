@@ -18,7 +18,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/jackson_2019_inferelator_v032'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/jackson_2019_inferelator_v050'
 
 if __name__ == '__main__':
     MPControl.set_multiprocess_engine("dask-cluster")
