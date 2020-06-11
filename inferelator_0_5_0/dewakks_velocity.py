@@ -5,6 +5,8 @@ from inferelator.preprocessing import single_cell
 from inferelator.workflow import inferelator_workflow
 from inferelator.velocity_workflow import VelocityWorkflow
 
+utils.Debug.set_verbose_level(1)
+
 N_CORES = 60
 
 DATA_FILE = "YPD_LOCAL_OPT_PV_DEXFORM.h5ad"
