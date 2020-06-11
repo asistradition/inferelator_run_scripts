@@ -22,8 +22,8 @@ OUTPUT_PATH = '/mnt/ceph/users/cjackson/jackson_2019_inferelator_v050'
 
 if __name__ == '__main__':
     MPControl.set_multiprocess_engine("dask-cluster")
-    MPControl.client.use_default_configuration("rusty-preempt")
-    MPControl.client.set_job_size_params(n_jobs=0)
+    MPControl.client.use_default_configuration("rusty_preempt")
+    MPControl.client.set_job_size_params(n_jobs=1)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
 
 wkf = inferelator_workflow("bbsr", VelocityWorkflow)
