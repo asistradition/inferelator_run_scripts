@@ -32,8 +32,8 @@ wkf = inferelator_workflow("bbsr", VelocityWorkflow)
 wkf.set_file_paths(input_dir=INPUT_DIR,
                    output_dir=OUTPUT_PATH,
                    gold_standard_file='gold_standard.tsv',
-                   priors_file='gold_standard.tsv',
-                   tf_names_file=TF_NAMES)
+                   priors_file=YEASTRACT_PRIOR,
+                   tf_names_file=YEASTRACT_TF_NAMES)
 wkf.set_expression_file(h5ad=DATA_FILE, h5_layer="smooth_count")
 wkf.set_velocity_parameters(velocity_file_name=DATA_FILE, velocity_file_type="h5ad", velocity_file_layer="pv")
 wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
