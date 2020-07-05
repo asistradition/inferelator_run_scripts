@@ -23,7 +23,8 @@ def set_up_workflow(wkf):
     wkf.set_file_paths(input_dir=INPUT_DIR,
                        output_dir=OUTPUT_PATH,
                        priors_file=YEASTRACT_PRIOR,
-                       tf_names_file=YEASTRACT_TF_NAMES)
+                       tf_names_file=YEASTRACT_TF_NAMES,
+                       gold_standard_file='gold_standard.tsv')
 
     task = worker.create_task(task_name="Jackson_2019",
                               workflow_type="single-cell",
