@@ -22,15 +22,16 @@ utils.Debug.set_verbose_level(1)
 def set_up_workflow(wkf):
     wkf.set_file_paths(input_dir=INPUT_DIR,
                        output_dir=OUTPUT_PATH,
-                       expression_matrix_file='GSE144820_GSE125162.h5ad',
-                       gene_metadata_file='orfs.tsv',
-                       gold_standard_file='gold_standard.tsv',
                        priors_file=YEASTRACT_PRIOR,
                        tf_names_file=YEASTRACT_TF_NAMES)
-    wkf.set_file_properties(extract_metadata_from_expression_matrix=True,
-                            expression_matrix_metadata=EXPRESSION_MATRIX_METADATA,
-                            expression_matrix_columns_are_genes=True,
-                            gene_list_index="SystematicName")
+
+    task = worker.create_task(task_name="Jackson_2019",
+                              workflow_type="single-cell",
+                              count_minimum=0.05,
+                              tasks_from_metadata=True,
+                              meta_data_task_column="Condition")
+    task.set_expression_file(h5ad='GSE144820_GSE125162.h5ad')
+
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
                                        cv_split_ratio=0.5)
     wkf.set_run_parameters(num_bootstraps=5)
@@ -38,9 +39,9 @@ def set_up_workflow(wkf):
 
 
 def set_up_cv_seeds(wkf):
-    cv_wrap = crossvalidation_workflow.CrossValidationManager(wkf)
-    cv_wrap.add_gridsearch_parameter('random_seed', list(range(42, 52)))
-    return cv_wrap
+    cv = crossvalidation_workflow.CrossValidationManager(wkf)
+    cv.add_gridsearch_parameter('random_seed', list(range(42, 52)))
+    return cv
 
 
 def set_up_dask(n_jobs=3):
