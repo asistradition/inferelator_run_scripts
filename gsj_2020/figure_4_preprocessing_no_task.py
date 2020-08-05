@@ -39,7 +39,7 @@ def set_up_cv_seeds(wkf):
     return cv
 
 
-def set_up_dask(n_jobs=3):
+def set_up_dask(n_jobs=2):
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_ccb", n_jobs=n_jobs)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
@@ -85,7 +85,6 @@ if __name__ == '__main__':
     worker = workflow.inferelator_workflow(regression="bbsr", workflow="single-cell")
     set_up_workflow(worker)
     worker.add_preprocess_step(single_cell.normalize_expression_to_median)
-    worker.add_preprocess_step("log2")
     worker.append_to_path('output_dir', 'figure_4_median')
     cv_wrap = set_up_cv_seeds(worker)
     cv_wrap.run()
