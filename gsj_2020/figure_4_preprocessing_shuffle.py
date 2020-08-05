@@ -37,6 +37,7 @@ def set_up_workflow(wkf):
                                        cv_split_ratio=0.5)
     wkf.set_run_parameters(num_bootstraps=5)
     wkf.set_count_minimum(0.05)
+    wkf.set_shuffle_parameters(shuffle_prior_axis=0)
 
 
 def set_up_cv_seeds(wkf):
@@ -91,7 +92,6 @@ if __name__ == '__main__':
     worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step(single_cell.normalize_expression_to_median)
-    worker.add_preprocess_step("log2")
     worker.append_to_path('output_dir', 'figure_4_median')
     cv_wrap = set_up_cv_seeds(worker)
     cv_wrap.run()
