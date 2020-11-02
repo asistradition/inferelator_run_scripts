@@ -56,13 +56,7 @@ def set_up_fig5b(wkf):
 
 
 def start_mpcontrol_dask(n_cores=N_CORES):
-    utils.Debug.set_verbose_level(1)
     MPControl.set_multiprocess_engine("dask-cluster")
-    MPControl.client.minimum_cores = n_cores
-    MPControl.client.maximum_cores = n_cores
-    MPControl.client.walltime = '48:00:00'
-    MPControl.client.add_worker_env_line('module load slurm')
-    MPControl.client.add_worker_env_line('module load gcc/8.3.0')
-    MPControl.client.add_worker_env_line('source ' + CONDA_ACTIVATE_PATH)
-    MPControl.client.cluster_controller_options.append("-p ccb")
+    MPControl.client.use_default_configuration("rusty_ccb", n_jobs=2)
+    MPControl.client.add_worker_conda("source /mnt/ceph/users/sysbio/.anaconda3/bin/activate inferelator")
     MPControl.connect()
