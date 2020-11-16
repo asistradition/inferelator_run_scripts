@@ -43,6 +43,7 @@ def set_up_dask(n_jobs=2):
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_ccb", n_jobs=n_jobs)
     MPControl.client.add_worker_conda("source /mnt/ceph/users/sysbio/.anaconda3/bin/activate inferelator")
+    MPControl.client.add_slurm_command_line("--constraint=broadwell")
     MPControl.connect()
 
 
