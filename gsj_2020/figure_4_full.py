@@ -64,3 +64,5 @@ if __name__ == '__main__':
     worker.set_run_parameters(num_bootstraps=50)
     worker.set_count_minimum(0.05)
 
+    worker.run()
+
