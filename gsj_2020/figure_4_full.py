@@ -14,7 +14,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4_full'
 
 utils.Debug.set_verbose_level(1)
 
@@ -58,7 +58,6 @@ if __name__ == '__main__':
 
     worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
     set_up_workflow_final(worker)
-    worker.append_to_path('output_dir', 'figure_4_full')
     worker.add_preprocess_step("log2")
 
     worker.set_run_parameters(num_bootstraps=50)
