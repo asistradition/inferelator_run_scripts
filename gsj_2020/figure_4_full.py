@@ -54,12 +54,11 @@ if __name__ == '__main__':
 
     utils.Debug.vprint("Testing preprocessing", level=0)
 
-    # Figure 5D: BBSR By Task Learning
-
     worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
     set_up_workflow_final(worker)
     worker.add_preprocess_step("log2")
 
+    worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
     worker.set_run_parameters(num_bootstraps=50)
     worker.set_count_minimum(0.05)
 
