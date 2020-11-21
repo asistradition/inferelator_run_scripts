@@ -14,7 +14,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_stars_fig4'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_stars_fig4_5fold'
 
 utils.Debug.set_verbose_level(1)
 
@@ -34,7 +34,7 @@ def set_up_workflow(wkf):
     task.set_expression_file(h5ad='GSE144820_GSE125162.h5ad')
 
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
-                                       cv_split_ratio=0.5)
+                                       cv_split_ratio=0.2)
     wkf.set_run_parameters(num_bootstraps=5)
     wkf.set_count_minimum(0.05)
 
