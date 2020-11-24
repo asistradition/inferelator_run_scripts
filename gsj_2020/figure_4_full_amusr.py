@@ -13,7 +13,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4_full'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4_stars_full'
 
 utils.Debug.set_verbose_level(1)
 
@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     utils.Debug.vprint("Testing preprocessing", level=0)
 
-    worker = workflow.inferelator_workflow(regression="stars", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow_final(worker)
     worker.add_preprocess_step("ftt")
 
