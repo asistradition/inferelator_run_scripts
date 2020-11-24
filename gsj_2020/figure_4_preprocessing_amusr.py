@@ -14,7 +14,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4_shuffle'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_amusr_fig4'
 
 utils.Debug.set_verbose_level(1)
 
@@ -37,7 +37,6 @@ def set_up_workflow(wkf):
                                        cv_split_ratio=0.2)
     wkf.set_run_parameters(num_bootstraps=5)
     wkf.set_count_minimum(0.05)
-    wkf.set_shuffle_parameters(shuffle_prior_axis=0)
 
 
 def set_up_cv_seeds(wkf):
@@ -61,7 +60,7 @@ if __name__ == '__main__':
 
     # Figure 5D: BBSR By Task Learning
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
     worker.append_to_path('output_dir', 'figure_4_count')
     cv_wrap = set_up_cv_seeds(worker)
@@ -70,7 +69,7 @@ if __name__ == '__main__':
     del cv_wrap
     del worker
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step("log2")
     worker.append_to_path('output_dir', 'figure_4_log2')
@@ -80,7 +79,7 @@ if __name__ == '__main__':
     del cv_wrap
     del worker
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step("ftt")
     worker.append_to_path('output_dir', 'figure_4_fft')
@@ -90,7 +89,7 @@ if __name__ == '__main__':
     del cv_wrap
     del worker
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step(single_cell.normalize_expression_to_median)
     worker.append_to_path('output_dir', 'figure_4_median')
@@ -100,7 +99,7 @@ if __name__ == '__main__':
     del cv_wrap
     del worker
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step(single_cell.normalize_expression_to_median)
     worker.add_preprocess_step("log2")
@@ -111,7 +110,7 @@ if __name__ == '__main__':
     del cv_wrap
     del worker
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step(single_cell.normalize_expression_to_median)
     worker.add_preprocess_step("ftt")
@@ -121,4 +120,3 @@ if __name__ == '__main__':
 
     del cv_wrap
     del worker
-

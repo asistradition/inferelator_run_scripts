@@ -34,7 +34,7 @@ def set_up_workflow(wkf):
     task.set_expression_file(h5ad='GSE144820_GSE125162.h5ad')
 
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
-                                       cv_split_ratio=0.5)
+                                       cv_split_ratio=0.2)
     wkf.set_run_parameters(num_bootstraps=5)
     wkf.set_count_minimum(0.05)
     wkf.set_shuffle_parameters(make_data_noise=True)

@@ -1,7 +1,6 @@
 from inferelator import utils
 from inferelator import workflow
 from inferelator import crossvalidation_workflow
-from inferelator.preprocessing import single_cell
 from inferelator.distributed.inferelator_mp import MPControl
 
 
@@ -24,7 +23,7 @@ def set_up_workflow_final(wkf):
                        output_dir=OUTPUT_PATH,
                        priors_file=YEASTRACT_PRIOR,
                        tf_names_file=YEASTRACT_TF_NAMES,
-                       gold_standard_file='gold_standard.tsv')
+                       gold_standard_file=YEASTRACT_PRIOR)
 
     task = worker.create_task(task_name="Jackson_2019",
                               workflow_type="single-cell",
@@ -54,9 +53,9 @@ if __name__ == '__main__':
 
     utils.Debug.vprint("Testing preprocessing", level=0)
 
-    worker = workflow.inferelator_workflow(regression="bbsr-by-task", workflow="multitask")
+    worker = workflow.inferelator_workflow(regression="stars", workflow="multitask")
     set_up_workflow_final(worker)
-    worker.add_preprocess_step("log2")
+    worker.add_preprocess_step("ftt")
 
     worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
     worker.set_run_parameters(num_bootstraps=50)

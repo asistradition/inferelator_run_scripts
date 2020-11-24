@@ -14,7 +14,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_stars_fig4_5fold'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_stars_fig4_shuffle'
 
 utils.Debug.set_verbose_level(1)
 
@@ -122,6 +122,7 @@ if __name__ == '__main__':
     del cv_wrap
     del worker
 
+"""
     worker = workflow.inferelator_workflow(regression="stars", workflow="multitask")
     set_up_workflow(worker)
     worker.add_preprocess_step(single_cell.normalize_medians_for_batch, batch_factor_column='Condition')
@@ -153,4 +154,4 @@ if __name__ == '__main__':
 
     del cv_wrap
     del worker
-
+"""
