@@ -64,7 +64,7 @@ if __name__ == '__main__':
     set_up_workflow(worker)
     worker.append_to_path('output_dir', 'figure_4_count')
     cv_wrap = set_up_cv_seeds(worker)
-    cv_wrap.run()
+    #cv_wrap.run()
 
     del cv_wrap
     del worker
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     worker.add_preprocess_step("log2")
     worker.append_to_path('output_dir', 'figure_4_log2')
     cv_wrap = set_up_cv_seeds(worker)
-    cv_wrap.run()
+    #cv_wrap.run()
 
     del cv_wrap
     del worker
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     worker.add_preprocess_step(single_cell.normalize_expression_to_median)
     worker.append_to_path('output_dir', 'figure_4_median')
     cv_wrap = set_up_cv_seeds(worker)
-    cv_wrap.run()
+    #cv_wrap.run()
 
     del cv_wrap
     del worker
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     worker.add_preprocess_step("log2")
     worker.append_to_path('output_dir', 'figure_4_median_log2')
     cv_wrap = set_up_cv_seeds(worker)
-    cv_wrap.run()
+    #cv_wrap.run()
 
     del cv_wrap
     del worker

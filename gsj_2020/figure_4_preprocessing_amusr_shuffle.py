@@ -47,7 +47,7 @@ def set_up_cv_seeds(wkf):
     return cv
 
 
-def set_up_dask(n_jobs=2):
+def set_up_dask(n_jobs=5):
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_ccb", n_jobs=n_jobs)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
