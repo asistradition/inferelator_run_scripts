@@ -41,9 +41,9 @@ def set_up_workflow(wkf):
     wkf.set_shuffle_parameters(shuffle_prior_axis=0)
 
 
-def set_up_cv_seeds(wkf):
+def set_up_cv_seeds(wkf, seeds=list(range(42, 52))):
     cv = crossvalidation_workflow.CrossValidationManager(wkf)
-    cv.add_gridsearch_parameter('random_seed', list(range(42, 52)))
+    cv.add_gridsearch_parameter('random_seed', seeds)
     return cv
 
 
