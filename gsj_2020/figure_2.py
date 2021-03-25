@@ -11,8 +11,8 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
-EXPRESSION_FILE_NAME = 'kostya_microarray_yeast.tsv.gz'
-META_DATA_FILE_NAME = 'meta_data.tsv'
+EXPRESSION_FILE_NAME = 'yeast_microarray_expression.tsv.gz'
+META_DATA_FILE_NAME = 'yeast_microarray_meta_data.tsv'
 
 PRIOR_FILES = edge_files = {"CISBP_1000": 'Scer_cisbp_1000_150_edge_matrix.tsv.gz',
                             "CISBP_200": 'Scer_cisbp_200_50_edge_matrix.tsv.gz',
