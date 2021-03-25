@@ -30,7 +30,7 @@ OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4_full'
 
 def set_up_workflow(wkf):
     wkf.set_file_paths(input_dir=INPUT_DIR,
-                       output_dir=OUTPUT_DIR,
+                       output_dir=OUTPUT_PATH,
                        tf_names_file="tf_names_yeastract.txt",
                        meta_data_file=META_DATA_FILE_NAME,
                        gold_standard_file="gold_standard.tsv")
