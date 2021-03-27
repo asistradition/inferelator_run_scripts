@@ -26,7 +26,7 @@ PRIOR_FILES = edge_files = {"CISBP_1000": 'Scer_cisbp_1000_150_edge_matrix.tsv.g
                             "YEASTRACT": YEASTRACT_PRIOR}
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_bbsr_fig4_full'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_fig2'
 
 def set_up_workflow(wkf):
     wkf.set_file_paths(input_dir=INPUT_DIR,
