@@ -14,12 +14,12 @@ YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 EXPRESSION_FILE_NAME = 'yeast_microarray_expression.tsv.gz'
 META_DATA_FILE_NAME = 'yeast_microarray_meta_data.tsv'
 
-PRIOR_FILES = edge_files = {"CISBP_1000": 'CO_CISBP_1000_150.tsv',
-                            "CISBP_200": 'CO_CISBP_200_50.tsv',
-                            "JASPAR_1000": 'CO_JASPAR_1000_150.tsv',
-                            "JASPAR_200": 'CO_JASPAR_200_50.tsv',
-                            "TRANSFAC_1000": 'CO_TRANSFAC_1000_150.tsv',
-                            "TRANSFAC_200": 'CO_TRANSFAC_200_50.tsv',
+PRIOR_FILES = edge_files = {"CISBP_1000": 'CO_CISBP_1000_150.tsv.gz',
+                            "CISBP_200": 'CO_CISBP_200_50.tsv.gz',
+                            "JASPAR_1000": 'CO_JASPAR_1000_150.tsv.gz',
+                            "JASPAR_200": 'CO_JASPAR_200_50.tsv.gz',
+                            "TRANSFAC_1000": 'CO_TRANSFAC_1000_150.tsv.gz',
+                            "TRANSFAC_200": 'CO_TRANSFAC_200_50.tsv.gz',
                             "YEASTRACT": YEASTRACT_PRIOR}
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
