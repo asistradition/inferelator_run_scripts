@@ -56,6 +56,7 @@ TASKS =      {'EXC_CN_1': {'file':'l1p_filtered/EXC_CN_1_Apr9.h5ad','tasker':Non
 
 MPControl.set_multiprocess_engine("dask-cluster")
 MPControl.client.use_default_configuration("rusty_ccb", n_jobs=10)
+MPControl.client.set_job_size_params(n_workers_per_job=14, n_threads_per_worker=2)
 MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
 MPControl.client.add_slurm_command_line("--constraint=broadwell")
 MPControl.client.set_job_size_params(walltime="168:00:00")
