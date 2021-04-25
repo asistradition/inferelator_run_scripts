@@ -8,7 +8,7 @@ from inferelator.postprocessing.results_processor import InferelatorResults
 utils.Debug.set_verbose_level(3)
 CONDA_ACTIVATE_PATH = '~/miniconda3/bin/activate'
 INPUT_DIR =  '/mnt/ceph/users/sysbio/GSM/data'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_fig6'
+OUTPUT_DIR = '/mnt/ceph/users/cjackson/gsj_2020_fig6'
 TF_NAMES =   'TF_e18.tsv'
 OUT_PREFIX = 'APR14_counts_10'
 GS =         'gold_std_apr_8_rec.tsv'
