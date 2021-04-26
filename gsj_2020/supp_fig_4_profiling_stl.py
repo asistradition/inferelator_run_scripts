@@ -43,6 +43,7 @@ MPControl.client.add_slurm_command_line("--constraint=broadwell")
 MPControl.client.set_cluster_params(local_workers=0)
 MPControl.client.set_job_size_params(walltime="168:00:00")
 MPControl.connect()
+MPControl.client.is_dask()
 
 
 if __name__ == '__main__':
