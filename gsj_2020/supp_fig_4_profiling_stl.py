@@ -52,7 +52,7 @@ if __name__ == '__main__':
         for seed in range(42, 52):
 
             worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
-            set_up_workflow_final(worker)
+            set_up_workflow(worker)
             worker.add_preprocess_step("log2")
 
             worker.set_output_file_names(network_file_name=None, confidence_file_name=None,
