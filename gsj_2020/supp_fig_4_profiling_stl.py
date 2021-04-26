@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
             cv = crossvalidation_workflow.CrossValidationManager(worker)
             cv.add_gridsearch_parameter('random_seed', [seed])
-            cv.add_size_subsampling([ratio])
+            cv.add_size_subsampling([ratio], size_sample_only=True)
 
             performance_filename = "perf_" + str(ratio) + "_" + str(seed)
             cv.output_file_name = performance_filename + "_perf.tsv"
