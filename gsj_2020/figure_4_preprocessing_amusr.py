@@ -45,11 +45,11 @@ def set_up_cv_seeds(wkf, seeds=list(range(42, 52))):
     return cv
 
 
-def set_up_dask(n_jobs=1):
+def set_up_dask(n_jobs=5):
     MPControl.set_multiprocess_engine("dask-cluster")
-    MPControl.client.use_default_configuration("rusty_rome", n_jobs=n_jobs)
+    MPControl.client.use_default_configuration("rusty_ccb", n_jobs=n_jobs)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
-    MPControl.client.set_job_size_params(walltime="168:00:00")
+    MPControl.client.add_slurm_command_line("--constraint=broadwell")
     MPControl.connect()
 
 
