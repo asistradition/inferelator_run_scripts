@@ -43,7 +43,7 @@ MPControl.connect()
 MPControl.client.is_dask()
 
 
-class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="stars-lasso", workflow="single-cell")):
+class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="stars", workflow="single-cell")):
 
     sample_ratio = None
     sample_seed = 1000
