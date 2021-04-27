@@ -4,7 +4,8 @@ from inferelator import crossvalidation_workflow
 from inferelator.distributed.inferelator_mp import MPControl
 
 from dask.distributed import performance_report
-import os, subprocess, signal, time
+import os, subprocess, signal, time, csv
+import numpy as np
 
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 
@@ -46,43 +47,71 @@ MPControl.connect()
 MPControl.client.is_dask()
 
 
+class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="amusr", workflow="multitask")):
+
+    sample_ratio = None
+    sample_seed = 1000
+
+    def startup_run(self):
+        super(DownsampleDataWorkflow, self).startup_run()
+
+        if sample_ratio == 1.:
+            return
+
+        rgen = np.random.default_rng(self.sample_seed)
+
+        for tobj in self._task_objects:
+            n_keep = int(tobj.data.num_obs * self.sample_ratio)
+            n_keep = 1 if n_keep < 1 else n_keep
+
+            tobj.data.get_random_samples(n_keep, random_gen=rgen, inplace=True, with_replacement=False)
+
 if __name__ == '__main__':
 
-    for ratio in [0.005, 0.01, 0.1, 1]:
 
-        for seed in range(42, 52):
+    with open(os.path.join(OUTPUT_PATH, "downsample_performance.tsv")) as out_fh:
 
-            worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
-            set_up_workflow(worker)
-            worker.add_preprocess_step("log2")
+        csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
+        csv_handler.writerow(["Ratio", "Seed", "Num_Cells", "Time" "AUPR", "F1", "MCC"])
 
-            worker.set_output_file_names(network_file_name=None, confidence_file_name=None,
-                                        nonzero_coefficient_file_name=None,
-                                        pdf_curve_file_name=None,
-                                        curve_data_file_name=None)
-                                        
-            worker.set_run_parameters(num_bootstraps=5)
-            worker.set_count_minimum(0.05)
-            worker.append_to_path('output_dir', 'network_outputs')
+        for ratio in [0.005, 0.01, 0.1, 1.0]:
 
-            cv = crossvalidation_workflow.CrossValidationManager(worker)
-            cv.add_gridsearch_parameter('random_seed', [seed])
-            cv.add_size_subsampling([ratio], size_sample_only=True)
+            for seed in range(42, 52):
 
-            performance_filename = "perf_" + str(ratio) + "_" + str(seed)
-            cv.output_file_name = performance_filename + "_perf.tsv"
-            performance_filename = os.path.join(OUTPUT_PATH, performance_filename)
+                worker = DownsampleDataWorkflow()
+                set_up_workflow(worker)
+                worker.add_preprocess_step("log2")
 
-            #https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true
-            cmd = "python -m inferelator.utils.profiler -p {pid} -o {pfn}".format(pid=os.getpid(), pfn=performance_filename + "_mem.tsv")
-            memory_monitor = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid) 
+                worker.set_output_file_names(network_file_name=None, confidence_file_name=None,
+                                            nonzero_coefficient_file_name=None,
+                                            pdf_curve_file_name=None,
+                                            curve_data_file_name=None)
+                                            
+                worker.set_run_parameters(num_bootstraps=5)
+                worker.append_to_path('output_dir', 'network_outputs')
+                worker.sample_ratio = ratio
+                worker.sample_seed = seed + 1000
 
-            with performance_report(filename=performance_filename + ".html"):
-                cv.run()
+                performance_filename = "perf_" + str(ratio) + "_" + str(seed)
+                cv.output_file_name = performance_filename + "_perf.tsv"
+                performance_filename = os.path.join(OUTPUT_PATH, performance_filename)
 
-            del cv
-            del worker
+                #https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true
+                cmd = "python -m inferelator.utils.profiler -p {pid} -o {pfn}".format(pid=os.getpid(), pfn=performance_filename + "_mem.tsv")
+                memory_monitor = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid) 
 
-            time.sleep(2)
-            os.killpg(os.getpgid(memory_monitor.pid), signal.SIGTERM)
+                start_time = time.time()
+                with performance_report(filename=performance_filename + ".html"):
+                    result = worker.run()
+                
+                csv_row = [str(ratio), str(seed), str(worker._num_obs), '%.1f' % (time.time() - start_time)]
+                csv_row += [result.all_scores[n] for n in result.all_names]
+
+                csv_handler.writerow(csv_row)
+
+                del worker
+                del result
+
+                time.sleep(2)
+                os.killpg(os.getpgid(memory_monitor.pid), signal.SIGTERM)
 
