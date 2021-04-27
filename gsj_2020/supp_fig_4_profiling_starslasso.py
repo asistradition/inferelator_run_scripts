@@ -63,7 +63,7 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="sta
 
 if __name__ == '__main__':
 
-
+    os.makedirs(OUTPUT_PATH, exist_ok=True)
     with open(os.path.join(OUTPUT_PATH, "downsample_performance_stars-lasso.tsv"), "w") as out_fh:
 
         csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
