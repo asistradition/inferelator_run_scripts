@@ -92,16 +92,14 @@ if __name__ == '__main__':
                 worker.sample_ratio = ratio
                 worker.sample_seed = seed + 1000
 
-                performance_filename = "perf_" + str(ratio) + "_" + str(seed)
-                cv.output_file_name = performance_filename + "_perf.tsv"
-                performance_filename = os.path.join(OUTPUT_PATH, performance_filename)
+                performance_filename = os.path.join(OUTPUT_PATH, "perf_" + str(ratio) + "_" + str(seed) + ".html")
 
                 #https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true
                 cmd = "python -m inferelator.utils.profiler -p {pid} -o {pfn}".format(pid=os.getpid(), pfn=performance_filename + "_mem.tsv")
                 memory_monitor = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid) 
 
                 start_time = time.time()
-                with performance_report(filename=performance_filename + ".html"):
+                with performance_report(filename=performance_filename):
                     result = worker.run()
                 
                 csv_row = [str(ratio), str(seed), str(worker._num_obs), '%.1f' % (time.time() - start_time)]
