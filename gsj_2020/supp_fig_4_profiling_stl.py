@@ -55,7 +55,7 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="amu
     def startup_run(self):
         super(DownsampleDataWorkflow, self).startup_run()
 
-        if sample_ratio == 1.:
+        if self.sample_ratio == 1.:
             return
 
         rgen = np.random.default_rng(self.sample_seed)
