@@ -4,7 +4,7 @@ from inferelator import crossvalidation_workflow
 from inferelator.distributed.inferelator_mp import MPControl
 
 from dask.distributed import performance_report
-import os, subprocess, signal, time, csv
+import os, subprocess, signal, time, csv, gc
 import numpy as np
 
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
