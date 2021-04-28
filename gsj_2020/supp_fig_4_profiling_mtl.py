@@ -13,7 +13,7 @@ PRIOR_FILE = "E18_EXC_apr_8_rec.tsv"
 TF_NAMES = "TF_e18.tsv"
 
 INPUT_DIR = '/mnt/ceph/users/sysbio/chris'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile_starslasso'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile'
 
 utils.Debug.set_verbose_level(1)
 
@@ -25,7 +25,11 @@ def set_up_workflow(wkf):
                        tf_names_file=TF_NAMES,
                        gold_standard_file=PRIOR_FILE)
 
-    wkf.set_expression_file(h5ad='144k_by_10384_EXC_IT_1.h5ad')
+    task = worker.create_task(task_name="Profiler",
+                              workflow_type="single-cell",
+                              tasks_from_metadata=True,
+                              meta_data_task_column="Group")
+    task.set_expression_file(h5ad='144k_by_10384_EXC_IT_1.h5ad')
 
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
                                        cv_split_ratio=0.2)
@@ -43,7 +47,7 @@ MPControl.connect()
 MPControl.client.is_dask()
 
 
-class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="stars", workflow="single-cell")):
+class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="amusr", workflow="multitask")):
 
     sample_ratio = None
     sample_seed = 1000
@@ -56,15 +60,16 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="sta
 
         rgen = np.random.default_rng(self.sample_seed)
 
-        n_keep = int(self.data.num_obs * self.sample_ratio)
-        n_keep = 1 if n_keep < 1 else n_keep
+        for tobj in self._task_objects:
+            n_keep = int(tobj.data.num_obs * self.sample_ratio)
+            n_keep = 1 if n_keep < 1 else n_keep
 
-        self.data.get_random_samples(n_keep, random_gen=rgen, inplace=True, with_replacement=False)
+            tobj.data.get_random_samples(n_keep, random_gen=rgen, inplace=True, with_replacement=False)
 
 if __name__ == '__main__':
 
-    os.makedirs(OUTPUT_PATH, exist_ok=True)
-    with open(os.path.join(OUTPUT_PATH, "downsample_performance_bbsr.tsv"), "w") as out_fh:
+
+    with open(os.path.join(OUTPUT_PATH, "downsample_performance_amusr.tsv"), "w") as out_fh:
 
         csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
         csv_handler.writerow(["Ratio", "Seed", "Num_Cells", "Time" "AUPR", "F1", "MCC"])
@@ -87,14 +92,14 @@ if __name__ == '__main__':
                 worker.sample_ratio = ratio
                 worker.sample_seed = seed + 1000
 
-                performance_filename = os.path.join(OUTPUT_PATH, "perf_" + str(ratio) + "_" + str(seed))
+                performance_filename = os.path.join(OUTPUT_PATH, "perf_" + str(ratio) + "_" + str(seed) + ".html")
 
                 #https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true
                 cmd = "python -m inferelator.utils.profiler -p {pid} -o {pfn}".format(pid=os.getpid(), pfn=performance_filename + "_mem.tsv")
                 memory_monitor = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid) 
 
                 start_time = time.time()
-                with performance_report(filename=performance_filename + ".html"):
+                with performance_report(filename=performance_filename):
                     result = worker.run()
                 
                 csv_row = [str(ratio), str(seed), str(worker._num_obs), '%.1f' % (time.time() - start_time)]

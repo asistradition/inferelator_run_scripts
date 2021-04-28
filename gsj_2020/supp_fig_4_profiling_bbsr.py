@@ -4,7 +4,7 @@ from inferelator import crossvalidation_workflow
 from inferelator.distributed.inferelator_mp import MPControl
 
 from dask.distributed import performance_report
-import os, subprocess, signal, time, csv
+import os, subprocess, signal, time, csv, gc
 import numpy as np
 
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
@@ -13,7 +13,7 @@ PRIOR_FILE = "E18_EXC_apr_8_rec.tsv"
 TF_NAMES = "TF_e18.tsv"
 
 INPUT_DIR = '/mnt/ceph/users/sysbio/chris'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile_starslasso'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile_bbsr'
 
 utils.Debug.set_verbose_level(1)
 
@@ -43,7 +43,7 @@ MPControl.connect()
 MPControl.client.is_dask()
 
 
-class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="stars", workflow="single-cell")):
+class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="bbsr", workflow="single-cell")):
 
     sample_ratio = None
     sample_seed = 1000
@@ -64,7 +64,7 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="sta
 if __name__ == '__main__':
 
     os.makedirs(OUTPUT_PATH, exist_ok=True)
-    with open(os.path.join(OUTPUT_PATH, "downsample_performance_bbsr.tsv"), "w") as out_fh:
+    with open(os.path.join(OUTPUT_PATH, "downsample_performance_stars-lasso.tsv"), "w") as out_fh:
 
         csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
         csv_handler.writerow(["Ratio", "Seed", "Num_Cells", "Time" "AUPR", "F1", "MCC"])
@@ -112,4 +112,3 @@ if __name__ == '__main__':
                 gc.collect()
 
                 out_fh.flush()
-
