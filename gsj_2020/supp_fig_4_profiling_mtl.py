@@ -13,7 +13,7 @@ PRIOR_FILE = "E18_EXC_apr_8_rec.tsv"
 TF_NAMES = "TF_e18.tsv"
 
 INPUT_DIR = '/mnt/ceph/users/sysbio/chris'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile_amusr'
 
 utils.Debug.set_verbose_level(1)
 
@@ -52,6 +52,9 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="amu
     sample_ratio = None
     sample_seed = 1000
 
+    def all_obs(self):
+        return sum([tobj.data.num_obs for tobj in self._task_objects])
+
     def startup_run(self):
         super(DownsampleDataWorkflow, self).startup_run()
 
@@ -88,6 +91,7 @@ if __name__ == '__main__':
                                             curve_data_file_name=None)
                                             
                 worker.set_run_parameters(num_bootstraps=5)
+                worker.set_regression_parameters(relative_tol=1e-5)
                 worker.append_to_path('output_dir', 'network_outputs')
                 worker.sample_ratio = ratio
                 worker.sample_seed = seed + 1000
@@ -102,7 +106,7 @@ if __name__ == '__main__':
                 with performance_report(filename=performance_filename):
                     result = worker.run()
                 
-                csv_row = [str(ratio), str(seed), str(worker._num_obs), '%.1f' % (time.time() - start_time)]
+                csv_row = [str(ratio), str(seed), str(worker.all_obs()), '%.1f' % (time.time() - start_time)]
                 csv_row += [result.all_scores[n] for n in result.all_names]
 
                 csv_handler.writerow(csv_row)
