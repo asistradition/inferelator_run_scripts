@@ -53,7 +53,7 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="amu
     sample_seed = 1000
 
     def all_obs(self):
-        return sum([tobj.data.num_obs for tobj in self._task_objects])
+        return sum([d.num_obs for d in self._task_design])
 
     def startup_run(self):
         super(DownsampleDataWorkflow, self).startup_run()
