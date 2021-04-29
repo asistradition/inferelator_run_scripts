@@ -52,9 +52,6 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="amu
     sample_ratio = None
     sample_seed = 1000
 
-    def all_obs(self):
-        return sum([d.num_obs for d in self._task_design])
-
     def startup_run(self):
         super(DownsampleDataWorkflow, self).startup_run()
 
@@ -106,7 +103,7 @@ if __name__ == '__main__':
                 with performance_report(filename=performance_filename):
                     result = worker.run()
                 
-                csv_row = [str(ratio), str(seed), str(worker.all_obs()), '%.1f' % (time.time() - start_time)]
+                csv_row = [str(ratio), str(seed), str(worker.num_obs), '%.1f' % (time.time() - start_time)]
                 csv_row += [result.all_scores[n] for n in result.all_names]
 
                 csv_handler.writerow(csv_row)
