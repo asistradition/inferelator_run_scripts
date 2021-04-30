@@ -64,14 +64,14 @@ class DownsampleDataWorkflow(workflow._factory_build_inferelator(regression="bbs
 if __name__ == '__main__':
 
     os.makedirs(OUTPUT_PATH, exist_ok=True)
-    with open(os.path.join(OUTPUT_PATH, "downsample_performance_bbsr.tsv"), "w") as out_fh:
+    with open(os.path.join(OUTPUT_PATH, "downsample_performance_bbsr.tsv"), "a+") as out_fh:
 
         csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
         csv_handler.writerow(["Ratio", "Seed", "Num_Cells", "Time" "AUPR", "F1", "MCC"])
 
-        for ratio in [0.005, 0.01, 0.1, 1.0]:
+        for ratio in [1.0]:
 
-            for seed in range(42, 52):
+            for seed in range(43, 52):
 
                 worker = DownsampleDataWorkflow()
                 set_up_workflow(worker)
