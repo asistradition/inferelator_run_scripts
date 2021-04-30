@@ -103,7 +103,7 @@ if __name__ == '__main__':
                 with performance_report(filename=performance_filename):
                     result = worker.run()
                 
-                csv_row = [str(ratio), str(seed), str(worker.num_obs), '%.1f' % (time.time() - start_time)]
+                csv_row = [str(ratio), str(seed), str(worker._num_obs), '%.1f' % (time.time() - start_time)]
                 csv_row += [result.all_scores[n] for n in result.all_names]
 
                 csv_handler.writerow(csv_row)
