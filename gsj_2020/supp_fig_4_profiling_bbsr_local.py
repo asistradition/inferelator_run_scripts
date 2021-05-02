@@ -3,7 +3,6 @@ from inferelator import workflow
 from inferelator import crossvalidation_workflow
 from inferelator.distributed.inferelator_mp import MPControl
 
-from dask.distributed import performance_report
 import os, subprocess, signal, time, csv, gc
 import numpy as np
 
@@ -90,8 +89,7 @@ if __name__ == '__main__':
                 memory_monitor = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True, preexec_fn=os.setsid) 
 
                 start_time = time.time()
-                with performance_report(filename=performance_filename + ".html"):
-                    result = worker.run()
+                result = worker.run()
                 
                 csv_row = [str(ratio), str(seed), str(worker._num_obs), '%.1f' % (time.time() - start_time)]
                 csv_row += [result.all_scores[n] for n in result.all_names]
