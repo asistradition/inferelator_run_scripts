@@ -84,6 +84,7 @@ if __name__ == '__main__':
                                             
                 worker.set_run_parameters(num_bootstraps=5)
                 worker.append_to_path('output_dir', 'network_outputs')
+                worker.random_seed = seed
                 worker.sample_ratio = ratio
                 worker.sample_seed = seed + 1000
 

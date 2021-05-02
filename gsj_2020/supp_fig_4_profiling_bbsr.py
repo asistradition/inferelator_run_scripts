@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
         for ratio in [1.0]:
 
-            for seed in range(43, 52):
+            for seed in range(49, 52):
 
                 worker = DownsampleDataWorkflow()
                 set_up_workflow(worker)
@@ -85,6 +85,7 @@ if __name__ == '__main__':
                 worker.set_run_parameters(num_bootstraps=5)
                 worker.append_to_path('output_dir', 'network_outputs')
                 worker.sample_ratio = ratio
+                worker.random_seed = seed
                 worker.sample_seed = seed + 1000
 
                 performance_filename = os.path.join(OUTPUT_PATH, "perf_" + str(ratio) + "_" + str(seed))
