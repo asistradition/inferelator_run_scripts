@@ -28,7 +28,6 @@ def set_up_workflow(wkf, prior_file = MOTIF_PRIOR):
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
                                        cv_split_ratio=0.2)
     wkf.set_run_parameters(num_bootstraps=5)
-    wkf.set_count_minimum(0.05)
 
 
 def set_up_cv_seeds(wkf):
