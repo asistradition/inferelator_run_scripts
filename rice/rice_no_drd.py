@@ -101,3 +101,64 @@ if __name__ == '__main__':
 
     del cv_wrap
     del worker
+
+    utils.Debug.vprint("Testing network prior", level=0)
+
+    worker = workflow.inferelator_workflow(regression="stars", workflow="tfa")
+    worker.drd_driver = None
+
+    set_up_workflow(worker, prior_file=NETWORK_PRIOR)
+    worker.append_to_path('output_dir', 'network_prior_stars_shuffle')
+    worker.set_shuffle_parameters(shuffle_prior_axis=0)
+
+    cv_wrap = set_up_cv_seeds(worker)
+    cv_wrap.run()
+
+    del cv_wrap
+    del worker
+
+    utils.Debug.vprint("Testing motif prior", level=0)
+
+    worker = workflow.inferelator_workflow(regression="stars", workflow="tfa")
+    worker.drd_driver = None
+
+    set_up_workflow(worker, prior_file=MOTIF_PRIOR)
+
+    worker.append_to_path('output_dir', 'motif_prior_stars_shuffle')
+    worker.set_shuffle_parameters(shuffle_prior_axis=0)
+
+    cv_wrap = set_up_cv_seeds(worker)
+    cv_wrap.run()
+
+    del cv_wrap
+    del worker
+
+    utils.Debug.vprint("Testing network prior", level=0)
+
+    worker = workflow.inferelator_workflow(regression="bbsr", workflow="tfa")
+    worker.drd_driver = None
+
+    set_up_workflow(worker, prior_file=NETWORK_PRIOR)
+    worker.set_shuffle_parameters(shuffle_prior_axis=0)
+
+    worker.append_to_path('output_dir', 'network_prior_bbsr_shuffle')
+    cv_wrap = set_up_cv_seeds(worker)
+    cv_wrap.run()
+
+    del cv_wrap
+    del worker
+
+    utils.Debug.vprint("Testing motif prior", level=0)
+
+    worker = workflow.inferelator_workflow(regression="bbsr", workflow="tfa")
+    worker.drd_driver = None
+
+    set_up_workflow(worker, prior_file=MOTIF_PRIOR)
+    worker.set_shuffle_parameters(shuffle_prior_axis=0)
+
+    worker.append_to_path('output_dir', 'motif_prior_bbsr_shuffle')
+    cv_wrap = set_up_cv_seeds(worker)
+    cv_wrap.run()
+
+    del cv_wrap
+    del worker
