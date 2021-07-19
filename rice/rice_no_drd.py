@@ -21,7 +21,7 @@ def set_up_workflow(wkf, prior_file = MOTIF_PRIOR):
     wkf.set_file_paths(input_dir=INPUT_DIR,
                        output_dir=OUTPUT_PATH)
 
-    worker.set_file_paths(priors_file=prior_file, gold_standard_file=prior_file)
+    wkf.set_file_paths(priors_file=prior_file, gold_standard_file=prior_file)
     wkf.set_expression_file(h5ad=EXPRESSION_FILE)
 
 
@@ -43,12 +43,18 @@ def set_up_dask(n_jobs=2):
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
     MPControl.connect()
 
+def set_up_multithreading():
+    MPControl.set_multiprocess_engine("multiprocessing")
+    MPControl.client.set_processes(38)
+    MPControl.connect()
+
 
 if __name__ == '__main__':
-    set_up_dask()
+    set_up_multithreading()
 
     utils.Debug.vprint("Testing network prior", level=0)
 
+    """
     worker = workflow.inferelator_workflow(regression="stars", workflow="tfa")
     worker.drd_driver = None
 
@@ -101,6 +107,7 @@ if __name__ == '__main__':
 
     del cv_wrap
     del worker
+    """
 
     utils.Debug.vprint("Testing network prior", level=0)
 
