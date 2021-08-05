@@ -48,5 +48,8 @@ if __name__ == '__main__':
         del cv_wrap
         del worker
 
+        return prior_noise
+
     with multiprocessing.Pool(4) as pooly:
-        pooly.imap_unordered(worker_guy, [0.01, 0.025, 0.05, 0.1])
+        for pn in pooly.imap_unordered(worker_guy, [0.01, 0.025, 0.05, 0.1]):
+            print(pn)
