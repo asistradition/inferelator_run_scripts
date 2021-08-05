@@ -37,6 +37,7 @@ if __name__ == '__main__':
     set_up_workflow(worker)
     worker.append_to_path('output_dir', 'full_build_shuffle')
     worker.set_shuffle_parameters(shuffle_prior_axis=0)
+    worker.run()
 
     del worker
 
@@ -44,5 +45,6 @@ if __name__ == '__main__':
     set_up_workflow(worker)
     worker.append_to_path('output_dir', 'full_build_noise')
     worker.set_shuffle_parameters(make_data_noise=True)
+    worker.run()
 
     del worker
