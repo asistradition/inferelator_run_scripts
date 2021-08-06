@@ -13,7 +13,7 @@ PRIOR_FILE = "E18_EXC_apr_8_rec.tsv"
 TF_NAMES = "TF_e18.tsv"
 
 INPUT_DIR = '/mnt/ceph/users/sysbio/chris'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile_genie3'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2020_profile_grnboost'
 
 utils.Debug.set_verbose_level(1)
 
