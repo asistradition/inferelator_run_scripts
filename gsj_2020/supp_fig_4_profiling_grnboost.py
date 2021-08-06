@@ -85,7 +85,7 @@ if __name__ == '__main__':
                 worker.sample_ratio = ratio
                 worker.random_seed = seed
                 worker.sample_seed = seed + 1000
-                worker.adjacency_method = "genie3"
+                worker.adjacency_method = "grnboost2"
 
                 performance_filename = os.path.join(OUTPUT_PATH, "perf_" + str(ratio) + "_" + str(seed))
 
