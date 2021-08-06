@@ -29,8 +29,7 @@ def set_up_workflow(wkf):
 
     wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
                                        cv_split_ratio=0.2)
-    wkf.set_run_parameters(num_bootstraps=5, use_mkl=True)
-    wkf.set_count_minimum(0.01)
+    wkf.dask_temp_path = "/mnt/ceph/users/cjackson/temp"
 
 
 MPControl.set_multiprocess_engine("dask-cluster")
