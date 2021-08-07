@@ -4,8 +4,6 @@ from inferelator import crossvalidation_workflow
 from inferelator.benchmarking.celloracle import CellOracleWorkflow ,CellOracleRegression
 from inferelator.distributed.inferelator_mp import MPControl
 
-from pathos import multiprocessing
-
 YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
@@ -35,8 +33,7 @@ def set_up_cv_seeds(wkf):
 
 if __name__ == '__main__':
 
-    def worker_guy(prior_noise):
-
+    for prior_noise in [0.01, 0.025, 0.05, 0.1]:
         worker = workflow.inferelator_workflow(regression=CellOracleRegression, workflow=CellOracleWorkflow)
         set_up_workflow(worker)
         worker.append_to_path('output_dir', 'noise_' + str(prior_noise))
@@ -47,9 +44,3 @@ if __name__ == '__main__':
 
         del cv_wrap
         del worker
-
-        return prior_noise
-
-    with multiprocessing.Pool(4) as pooly:
-        for pn in pooly.imap_unordered(worker_guy, [0.01, 0.025, 0.05, 0.1]):
-            print(pn)
