@@ -33,11 +33,11 @@ def set_up_cv_seeds(wkf):
 
 if __name__ == '__main__':
 
-    for prior_noise in [0.01, 0.025, 0.05, 0.1]:
+    for prior_noise in [0, 0.01, 0.025, 0.05, 0.1]:
         worker = workflow.inferelator_workflow(regression=CellOracleRegression, workflow=CellOracleWorkflow)
         set_up_workflow(worker)
         worker.append_to_path('output_dir', 'noise_' + str(prior_noise))
-        worker.set_shuffle_parameters(add_prior_noise=prior_noise)
+        worker.set_shuffle_parameters(add_prior_noise=prior_noise) if prior_noise > 0 else None
 
         cv_wrap = set_up_cv_seeds(worker)
         cv_wrap.run()
