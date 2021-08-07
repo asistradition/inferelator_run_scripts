@@ -20,8 +20,6 @@ def set_up_workflow(wkf):
                        gold_standard_file='gold_standard.tsv')
     wkf.set_expression_file(h5ad='GSE144820_GSE125162.h5ad')
     wkf.dask_temp_path = '/scratch/cj59/'
-    wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True,
-                                       cv_split_ratio=0.2)
     wkf.append_to_path('output_dir', 'shuffle')
     wkf.set_shuffle_parameters(shuffle_prior_axis=0)
 
