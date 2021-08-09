@@ -88,7 +88,7 @@ with open(os.path.join(OUTPUT_PATH, "BEELINE_SYNTHETIC.tsv"), mode="a", bufferin
 
             out_dir = os.path.join(OUTPUT_PATH, pp, name)
 
-            sub_pp_gs_reformatted, sub_pp_tfs = reprocess_gs(os.path.join(sub_pp, GS_FILE), name)
+            sub_pp_gs_reformatted, sub_pp_tfs = reprocess_gs(os.path.join(sub_pp, GS_FILE), name, os.path.join(sub_pp, EXPR_FILE))
             print("Inference for {n}".format(n=name))
 
             # Run without split or prior
