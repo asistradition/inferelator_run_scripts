@@ -14,7 +14,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/rome_test'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2021_amusr_fig4'
 
 utils.Debug.set_verbose_level(1)
 
