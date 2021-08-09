@@ -17,8 +17,8 @@ import numpy as np
 
 METHOD = "bbsr"
 
-INPUT_DIR = '/home/chris/PycharmProjects/Beeline/BEELINE-data/inputs/Synthetic'
-OUTPUT_PATH = '/home/chris/PycharmProjects/Beeline/BEELINE-results-' + METHOD
+INPUT_DIR = '/scratch/cj59/beeline/BEELINE-data/inputs/Synthetic'
+OUTPUT_PATH = '/scratch/cj59/beeline/BEELINE-results-' + METHOD
 
 EXPR_FILE = "ExpressionData.csv"
 GS_FILE = "refNetwork.csv"
@@ -59,6 +59,7 @@ def setup_workflow(in_dir, gs_file, tf_file, out_dir):
                               gold_standard_file=gs_file, tf_names_file=tf_file)
         worker.set_file_properties(expression_matrix_columns_are_genes=False)
         worker.set_file_loading_arguments('expression_matrix_file', sep=",")
+        worker.set_run_parameters(num_bootstraps=5)
 
         return worker
 
