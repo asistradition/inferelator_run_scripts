@@ -34,9 +34,10 @@ utils.Debug.set_verbose_level(0)
 td = tempfile.TemporaryDirectory()
 os.makedirs(OUTPUT_PATH, exist_ok=True)
 
-def reprocess_gs(gs_file, prefix):
+def reprocess_gs(gs_file, prefix, expr_file):
 
     gold_standard = pd.read_csv(gs_file, sep=",")
+    expr = pd.read_csv(expr_file, index_col=0, sep=",")
 
     print("Generated gold standard for {n} ({x} edges)".format(n=prefix, x=gold_standard.shape[0]))
 
@@ -48,7 +49,7 @@ def reprocess_gs(gs_file, prefix):
     out_gs = os.path.join(td.name, prefix + "gold_standard.tsv")
     gold_standard.to_csv(out_gs, sep="\t")
     out_tf = os.path.join(td.name, prefix + "tfs.txt")
-    pd.DataFrame(gold_standard.columns.tolist()).to_csv(out_tf, index=False)
+    pd.DataFrame(expr.index.tolist()).to_csv(out_tf, index=False)
 
     return out_gs, out_tf
 
