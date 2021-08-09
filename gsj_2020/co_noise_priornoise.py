@@ -3,6 +3,7 @@ from inferelator import workflow
 from inferelator import crossvalidation_workflow
 from inferelator.benchmarking.celloracle import CellOracleWorkflow ,CellOracleRegression
 from inferelator.distributed.inferelator_mp import MPControl
+import os
 
 YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
