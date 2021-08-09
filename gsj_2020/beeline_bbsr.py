@@ -44,6 +44,7 @@ def reprocess_gs(gs_file, prefix, expr_file):
     gold_standard[~pd.isna(gold_standard)] = 1.
     gold_standard = gold_standard.fillna(0).astype(int)
     gold_standard.columns = gold_standard.columns.droplevel(0)
+    gold_standard = gold_standard.reindex(expr.index, axis=1).reindex(expr.index, axis=0).fillna(0).astype(int)
 
     out_gs = os.path.join(td.name, prefix + "gold_standard.tsv")
     gold_standard.to_csv(out_gs, sep="\t")
