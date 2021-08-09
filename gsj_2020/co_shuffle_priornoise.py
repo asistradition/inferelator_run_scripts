@@ -33,7 +33,13 @@ def set_up_cv_seeds(wkf):
 
 if __name__ == '__main__':
 
-    for prior_noise in [0, 0.01, 0.025, 0.05, 0.1]:
+    if 'SLURM_ARRAY_TASK_ID' in os.environ:
+        i = int(os.environ['SLURM_ARRAY_TASK_ID'])
+        sl = slice(i-1, i)
+    else:
+        sl = slice(0,5)
+
+    for prior_noise in [0, 0.01, 0.025, 0.05, 0.1][sl]:
         worker = workflow.inferelator_workflow(regression=CellOracleRegression, workflow=CellOracleWorkflow)
         set_up_workflow(worker)
         worker.append_to_path('output_dir', 'noise_' + str(prior_noise))

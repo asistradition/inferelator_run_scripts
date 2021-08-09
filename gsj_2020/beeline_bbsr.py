@@ -13,6 +13,7 @@ import pandas as pd
 import tempfile
 import time
 import warnings 
+import numpy as np
 
 METHOD = "bbsr"
 
@@ -61,11 +62,19 @@ def setup_workflow(in_dir, gs_file, tf_file, out_dir):
 
         return worker
 
+def get_median_scores(wkf):
+    cv = crossvalidation_workflow.CrossValidationManager(wkf)
+    cv.add_gridsearch_parameter('random_seed', list(range(42, 52)))
+    res = cv.run()
+    medians = [np.median([result[1].all_scores[n] for result in res]) for n in res[0][1].all_names]
+    print(dict(zip(res[0][1].all_names, medians)))
+    return medians
+
 project_paths = glob.glob(os.path.join(INPUT_DIR, "*"))
 subproject_paths = {os.path.split(p)[1]: glob.glob(os.path.join(p, "*")) for p in project_paths}
 
 warnings.simplefilter("ignore")
-with open(os.path.join(OUTPUT_PATH, "BEELINE_SYNTHETIC.tsv"), mode="w", buffering=1) as csv_handle:
+with open(os.path.join(OUTPUT_PATH, "BEELINE_SYNTHETIC.tsv"), mode="a", buffering=1) as csv_handle:
     _csv_writer = csv.writer(csv_handle, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
     _csv_writer.writerow(CSV_HEAD)
 
@@ -82,39 +91,44 @@ with open(os.path.join(OUTPUT_PATH, "BEELINE_SYNTHETIC.tsv"), mode="w", bufferin
 
             # Run without split or prior
             worker = setup_workflow(sub_pp, sub_pp_gs_reformatted, sub_pp_tfs, out_dir)
+            worker.append_to_path('output_dir', "no_prior")
+
             worker.set_network_data_flags(use_no_prior=True)
             worker.set_run_parameters(random_seed=k)
-            result = worker.run()
-            print(worker.priors_data)
+            worker.get_data()
 
-            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, False, False] + [result.all_scores[n] for n in result.all_names])
+            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, False, False] + get_median_scores(worker))
+
+            del worker
             time.sleep(0.1)
 
             # Run with split
             worker = setup_workflow(sub_pp, sub_pp_gs_reformatted, sub_pp_tfs, out_dir)
+            worker.append_to_path('output_dir', "prior")
+
             worker.set_file_paths(priors_file=sub_pp_gs_reformatted)
             worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.5)
             worker.set_run_parameters(random_seed=k)
+            worker.get_data()
 
-            result = worker.run()
-            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, True, False] + [result.all_scores[n] for n in result.all_names])
+            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, True, False] + get_median_scores(worker))
 
             del worker
-            del result
             time.sleep(0.1)
 
             # Run with split + shuffle
             worker = setup_workflow(sub_pp, sub_pp_gs_reformatted, sub_pp_tfs, out_dir)
+            worker.append_to_path('output_dir', "prior_shuffle")
+
             worker.set_file_paths(priors_file=sub_pp_gs_reformatted)
             worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.5)
             worker.set_shuffle_parameters(shuffle_prior_axis=0)
             worker.set_run_parameters(random_seed=k)
+            worker.get_data()
 
-            result = worker.run()
-            print(worker.priors_data)
-            print(result.betas)
+            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, True, True] + get_median_scores(worker))
 
-            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, True, True] + [result.all_scores[n] for n in result.all_names])
+            del worker
             time.sleep(0.1)
 
             os.remove(sub_pp_gs_reformatted)
