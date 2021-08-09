@@ -2,7 +2,6 @@ from re import sub
 from inferelator import utils
 from inferelator import workflow
 from inferelator import crossvalidation_workflow
-from inferelator.preprocessing import single_cell
 from inferelator.postprocessing import MetricHandler
 from inferelator.distributed.inferelator_mp import MPControl
 
@@ -61,6 +60,8 @@ def setup_workflow(in_dir, gs_file, tf_file, out_dir):
         worker.set_file_properties(expression_matrix_columns_are_genes=False)
         worker.set_file_loading_arguments('expression_matrix_file', sep=",")
         worker.set_run_parameters(num_bootstraps=5)
+        worker.set_output_file_names(nonzero_coefficient_file_name=None, pdf_curve_file_name=None,
+                                     curve_data_file_name=None)
 
         return worker
 
