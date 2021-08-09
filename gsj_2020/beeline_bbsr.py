@@ -125,7 +125,7 @@ with open(os.path.join(OUTPUT_PATH, "BEELINE_SYNTHETIC.tsv"), mode="a", bufferin
 
             worker.set_file_paths(priors_file=sub_pp_gs_reformatted)
             worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.5)
-            worker.set_shuffle_parameters(shuffle_prior_axis=0)
+            worker.set_shuffle_parameters(shuffle_prior_axis=-1)
             worker.set_run_parameters(random_seed=k)
             worker.get_data()
 
