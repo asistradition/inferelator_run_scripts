@@ -19,7 +19,7 @@ def set_up_workflow(wkf):
                        priors_file=YEASTRACT_PRIOR,
                        tf_names_file=YEASTRACT_TF_NAMES,
                        gold_standard_file='gold_standard.tsv')
-    wkf.append_to_path('output_dir', "noise")
+    wkf.append_to_path('output_dir', "shuffle")
 
     task = worker.create_task(task_name="Jackson_2019",
                               workflow_type="single-cell",

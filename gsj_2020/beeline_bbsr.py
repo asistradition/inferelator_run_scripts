@@ -106,6 +106,17 @@ with open(os.path.join(OUTPUT_PATH, "BEELINE_SYNTHETIC.tsv"), mode="a", bufferin
             del worker
             time.sleep(0.1)
 
+            # Run with shuffle
+            worker = setup_workflow(sub_pp, sub_pp_gs_reformatted, sub_pp_tfs, out_dir)
+            worker.append_to_path('output_dir', "no_prior_shuffle")
+
+            worker.set_file_paths(priors_file=sub_pp_gs_reformatted)
+            worker.set_shuffle_parameters(shuffle_prior_axis=-1)
+            worker.set_run_parameters(random_seed=k)
+            worker.get_data()
+
+            _csv_writer.writerow([name, worker._num_obs, worker._num_genes, False, True] + get_median_scores(worker))
+
             # Run with split
             worker = setup_workflow(sub_pp, sub_pp_gs_reformatted, sub_pp_tfs, out_dir)
             worker.append_to_path('output_dir', "prior")
