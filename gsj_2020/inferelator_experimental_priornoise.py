@@ -3,6 +3,7 @@ from inferelator import workflow
 from inferelator import crossvalidation_workflow
 from inferelator.preprocessing import single_cell
 from inferelator.distributed.inferelator_mp import MPControl
+import os
 
 YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
@@ -46,7 +47,13 @@ if __name__ == '__main__':
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
     MPControl.connect()
 
-    for prior_noise in [0, 0.01, 0.025, 0.05, 0.1]:
+    if 'SLURM_ARRAY_TASK_ID' in os.environ:
+        i = int(os.environ['SLURM_ARRAY_TASK_ID'])
+        sl = slice(i-1, i)
+    else:
+        sl = slice(0,5)
+
+    for prior_noise in [0, 0.01, 0.025, 0.05, 0.1][sl]:
 
         worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
         set_up_workflow(worker)
