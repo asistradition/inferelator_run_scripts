@@ -60,7 +60,7 @@ if __name__ == '__main__':
         worker.append_to_path('output_dir', 'noise_' + str(prior_noise))
         worker.set_shuffle_parameters(add_prior_noise=prior_noise) if prior_noise > 0 else None
         worker.add_preprocess_step("ftt")
-
+    
         cv_wrap = set_up_cv_seeds(worker)
         cv_wrap.run()
 
