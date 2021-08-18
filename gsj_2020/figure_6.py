@@ -8,7 +8,7 @@ from inferelator.postprocessing.results_processor import InferelatorResults
 utils.Debug.set_verbose_level(3)
 CONDA_ACTIVATE_PATH = '~/miniconda3/bin/activate'
 INPUT_DIR =  '/mnt/ceph/users/sysbio/GSM/data'
-OUTPUT_DIR = '/mnt/ceph/users/cjackson/gsj_2020_fig6'
+OUTPUT_DIR = '/mnt/ceph/users/cjackson/gsj_2021_fig6'
 TF_NAMES =   'TF_e18.tsv'
 OUT_PREFIX = 'APR14_counts_10'
 GS =         'gold_std_apr_8_rec.tsv'
@@ -56,7 +56,6 @@ TASKS =      {'EXC_CN_1': {'file':'l1p_filtered/EXC_CN_1_Apr9.h5ad','tasker':Non
 
 MPControl.set_multiprocess_engine("dask-cluster")
 MPControl.client.use_default_configuration("rusty_ccb", n_jobs=10)
-MPControl.client.set_job_size_params(n_workers_per_job=14, n_threads_per_worker=2)
 MPControl.client.set_cluster_params(local_workers=1)
 MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
 MPControl.client.add_slurm_command_line("--constraint=broadwell")
@@ -78,13 +77,13 @@ for task in TASKS.keys():
                                                extract_metadata_from_expression_matrix=False,
                                                workflow_type="single-cell",
                                                priors_file=PRIORS[TASKS[task]['prior']])
-    TASKS[task]['tasker'].set_expression_file(h5ad=TASKS[task]['file'],h5_layer='counts')
-    #TASKS[task]['tasker'].set_count_minimum(0.05)
+    TASKS[task]['tasker'].set_expression_file(h5ad=TASKS[task]['file'], h5_layer='counts')
+    TASKS[task]['tasker'].set_count_minimum(0.05)
     TASKS[task]['tasker'].add_preprocess_step(single_cell.log2_data)
 
 
 #worker.set_shuffle_parameters(shuffle_prior_axis=0)
-worker.set_run_parameters(num_bootstraps=10)
+worker.set_run_parameters(num_bootstraps=1)
 final_network = worker.run()
 #worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)#split_gold_standard_for_crossvalidation=.2)
 #worker.set_run_parameters(num_bootstraps=3)
