@@ -8,7 +8,7 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/home/cj59/Documents/scenic'
-OUTPUT_PATH = '/scratch/cj59/gsj_2020_scenic'
+OUTPUT_PATH = '/scratch/cj59/gsj_2020_scenic/prior_noise'
 
 utils.Debug.set_verbose_level(1)
 
