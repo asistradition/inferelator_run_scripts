@@ -5,7 +5,15 @@ from inferelator.preprocessing import single_cell
 from inferelator.distributed.inferelator_mp import MPControl
 from inferelator.amusr_workflow import MultitaskLearningWorkflow
 from inferelator.postprocessing.results_processor import InferelatorResults
-utils.Debug.set_verbose_level(3)
+
+import os
+import csv
+import time
+from dask.distributed import performance_report
+
+utils.Debug.set_verbose_level(1)
+
+
 CONDA_ACTIVATE_PATH = '~/miniconda3/bin/activate'
 INPUT_DIR =  '/mnt/ceph/users/sysbio/GSM/data'
 OUTPUT_DIR = '/mnt/ceph/users/cjackson/gsj_2021_fig6'
@@ -67,7 +75,7 @@ worker.set_file_paths(input_dir=INPUT_DIR, output_dir=OUTPUT_DIR, tf_names_file=
 worker.append_to_path('output_dir', OUT_PREFIX)
 worker.count_minimum = None
 worker.curve_data_file_name = '{}_curve.tsv'.format(OUT_PREFIX)
-worker.set_run_parameters(use_mkl=True)
+worker.set_run_parameters(use_mkl=True, num_bootstraps=1)
 
 for task in TASKS.keys():
     TASKS[task]['tasker'] = worker.create_task(task_name=task,
@@ -82,11 +90,19 @@ for task in TASKS.keys():
     TASKS[task]['tasker'].add_preprocess_step(single_cell.log2_data)
 
 
-#worker.set_shuffle_parameters(shuffle_prior_axis=0)
-worker.set_run_parameters(num_bootstraps=1)
-final_network = worker.run()
-#worker.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)#split_gold_standard_for_crossvalidation=.2)
-#worker.set_run_parameters(num_bootstraps=3)
-#cv = crossvalidation_workflow.CrossValidationManager(worker)
-#cv.add_gridsearch_parameter('random_seed', list(range(512, 513)))
-#cv.run()
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+with open(os.path.join(OUTPUT_DIR, "full_build_timing.tsv"), "a+") as out_fh:
+
+    csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
+    csv_handler.writerow(["Num_Cells", "Time", "AUPR", "F1", "MCC"])
+
+    performance_filename = os.path.join(OUTPUT_DIR, "dask_performance")
+
+    start_time = time.time()
+    with performance_report(filename=performance_filename + ".html"):
+        result = worker.run()
+    
+    csv_row = [str(worker._num_obs), '%.1f' % (time.time() - start_time)]
+    csv_row += [result.all_scores[n] for n in result.all_names]
+
+    csv_handler.writerow(csv_row)
