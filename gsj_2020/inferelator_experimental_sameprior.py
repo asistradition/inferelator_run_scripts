@@ -1,7 +1,7 @@
 from inferelator import utils
 from inferelator import workflow
 from inferelator import crossvalidation_workflow
-from inferelator.preprocessing import single_cell
+from inferelator.regression.base_regression import PreprocessData
 from inferelator.distributed.inferelator_mp import MPControl
 import os
 
@@ -9,7 +9,7 @@ YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2021_inferelator_priornoise'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/gsj_2021_inferelator_priornoise_nocirc'
 
 utils.Debug.set_verbose_level(1)
 
@@ -29,11 +29,11 @@ def set_up_workflow(wkf):
                               meta_data_task_column="Condition")
     task.set_expression_file(h5ad='GSE144820_GSE125162.h5ad')
 
-    wkf.set_run_parameters(num_bootstraps=5)
+    wkf.set_run_parameters(num_bootstraps=5, use_numba=True)
     wkf.set_count_minimum(0.05)
 
 
-def set_up_cv_seeds(wkf, seeds=list(range(42, 52))):
+def set_up_cv_seeds(wkf, seeds=list(range(50, 52))):
     cv = crossvalidation_workflow.CrossValidationManager(wkf)
     cv.add_gridsearch_parameter('random_seed', seeds)
     return cv
@@ -46,6 +46,8 @@ if __name__ == '__main__':
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
     MPControl.connect()
+
+    PreprocessData.set_preprocessing(remove_circularity=True)
 
     if 'SLURM_ARRAY_TASK_ID' in os.environ:
         i = int(os.environ['SLURM_ARRAY_TASK_ID'])
