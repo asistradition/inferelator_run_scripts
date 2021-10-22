@@ -30,7 +30,6 @@ def set_up_workflow(wkf):
                        tf_names_file=TF_LIST_FILE_NAME,
                        priors_file=PRIORS_FILE_NAME,
                        gold_standard_file=GOLD_STANDARD_FILE_NAME)
-    wkf.set_file_properties(expression_matrix_columns_are_genes=False)
     wkf._do_preprocessing = False
     wkf.do_scenic = False
     wkf.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
