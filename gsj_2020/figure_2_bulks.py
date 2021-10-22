@@ -24,9 +24,10 @@ n_cores_local = 10
 local_engine = True
 
 # Multiprocessing needs to be protected with the if __name__ == 'main' pragma
-if __name__ == '__main__' and local_engine:
-    MPControl.set_multiprocess_engine("multiprocessing")
-    MPControl.client.set_processes(n_cores_local)
+if __name__ == '__main__':
+    MPControl.set_multiprocess_engine("dask-cluster")
+    MPControl.client.use_default_configuration("greene", n_jobs=2)
+    MPControl.client.add_worker_conda("source /scratch/cgsb/gresham/no_backup/Chris/.conda/bin/activate scenic")
     MPControl.connect()
 
 
@@ -40,7 +41,7 @@ def set_up_workflow(wkf):
     wkf.set_file_properties(expression_matrix_columns_are_genes=False)
     wkf._do_preprocessing = False
     wkf.do_scenic = False
-    wkf.set_crossvalidation_parameters(split_gold_standard_for_crossvalidation=True, cv_split_ratio=0.2)
+    wkf.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
     return wkf
 
 
