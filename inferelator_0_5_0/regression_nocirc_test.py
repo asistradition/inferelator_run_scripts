@@ -1,7 +1,7 @@
 from inferelator import utils
 from inferelator import workflow
 from inferelator import crossvalidation_workflow
-from inferelator.preprocessing import single_cell
+from inferelator.regression.base_regression import PreprocessData
 from inferelator.distributed.inferelator_mp import MPControl
 
 
@@ -14,7 +14,7 @@ TF_NAMES = "tf_names_gold_standard.txt"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/numba_amusr_regression_test'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/inferelator_regression_nocirc'
 
 utils.Debug.set_verbose_level(1)
 
@@ -56,6 +56,8 @@ def set_up_dask(n_jobs=3):
 
 if __name__ == '__main__':
     set_up_dask()
+
+    PreprocessData.set_preprocessing(remove_circularity=True)
 
     worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
     set_up_workflow(worker)
