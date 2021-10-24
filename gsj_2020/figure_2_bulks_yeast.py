@@ -41,7 +41,7 @@ def set_up_workflow(wkf):
 # Create a worker
 worker = inferelator_workflow(regression=SCENICRegression, workflow=SCENICWorkflow)
 worker = set_up_workflow(worker)
-worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
+worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
 worker.set_file_properties(extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
                            metadata_handler="nonbranching")
@@ -53,7 +53,7 @@ worker.run()
 # Create a worker
 worker = inferelator_workflow(regression=SCENICRegression, workflow=SCENICWorkflow)
 worker = set_up_workflow(worker)
-worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
+worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
 worker.set_file_properties(extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
                            metadata_handler="nonbranching")
@@ -67,7 +67,7 @@ worker.run()
 # Create a worker
 worker = inferelator_workflow(regression=SCENICRegression, workflow=SCENICWorkflow)
 worker = set_up_workflow(worker)
-worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
+worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
 worker.set_file_properties(extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['isTs', 'is1stLast', 'prevCol', 'del.t', 'condName'],
                            metadata_handler="branching")
@@ -79,7 +79,7 @@ worker.run()
 # Create a worker
 worker = inferelator_workflow(regression=SCENICRegression, workflow=SCENICWorkflow)
 worker = set_up_workflow(worker)
-worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
+worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
 worker.set_file_properties(extract_metadata_from_expression_matrix=True,
                            expression_matrix_metadata=['isTs', 'is1stLast', 'prevCol', 'del.t', 'condName'],
                            metadata_handler="branching")
