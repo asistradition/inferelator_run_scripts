@@ -18,7 +18,7 @@ YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 GOLD_STANDARD = 'gold_standard.tsv'
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/yeast'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/at_comps'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/at_comps_named'
 
 utils.Debug.set_verbose_level(1)
 
@@ -74,7 +74,6 @@ if __name__ == '__main__':
 
             for seed in range(42,52):
 
-
                 worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
                 set_up_workflow(worker, gs, tf_file)
                 worker.add_preprocess_step(single_cell.normalize_expression_to_median)
@@ -86,7 +85,7 @@ if __name__ == '__main__':
                 results = worker.run()
                 csv_handler.writerow(["rank_combined", seed] + _scores(results))
 
-                for k in results.tasks.keys():
-                    csv_handler.writerow([k, seed] + _scores(results.tasks[k]))
+                for t_id, t_name in enumerate(worker._task_names):
+                    csv_handler.writerow([t_name, seed] + _scores(results.tasks[t_id]))
 
                 out_fh.flush()
