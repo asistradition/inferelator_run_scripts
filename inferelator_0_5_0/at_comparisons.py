@@ -4,6 +4,8 @@ from inferelator import crossvalidation_workflow
 from inferelator.preprocessing import single_cell
 from inferelator.distributed.inferelator_mp import MPControl
 
+import os
+import csv
 
 CONDA_ACTIVATE_PATH = '~/.local/anaconda3/bin/activate'
 EXPRESSION_MATRIX_METADATA = ['Genotype', 'Genotype_Group', 'Replicate', 'Condition', 'tenXBarcode']
@@ -55,30 +57,34 @@ def set_up_dask(n_jobs=2):
     MPControl.connect()
 
 
+def _scores(result):
+    return [result.all_scores[n] for n in ["AUPR", "F1", "MCC"]]
+
+
 if __name__ == '__main__':
     set_up_dask()
 
-    utils.Debug.vprint("Benchmarking", level=0)
+    for out_dir, gs, tf_file in [('gs_to_gs', GOLD_STANDARD, TF_NAMES),
+                                 ('yt_to_gs', YEASTRACT_PRIOR, YEASTRACT_TF_NAMES)]:
 
-    # Figure 5D: BBSR By Task Learning
-    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
-    set_up_workflow(worker, GOLD_STANDARD, TF_NAMES)
-    worker.add_preprocess_step(single_cell.normalize_expression_to_median)
-    worker.add_preprocess_step("ln")
-    worker.append_to_path('output_dir', 'gs_to_gs')
-    cv_wrap = set_up_cv_seeds(worker)
-    cv_wrap.run()
+        with open(os.path.join(OUTPUT_PATH, out_dir, "crossvalidation_task_performance.tsv"), "w") as out_fh:
 
-    del cv_wrap
-    del worker
+            csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
+            csv_handler.writerow(["Task", "Seed", "AUPR", "F1", "MCC"])
 
-    worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
-    set_up_workflow(worker, YEASTRACT_PRIOR, YEASTRACT_TF_NAMES)
-    worker.add_preprocess_step(single_cell.normalize_expression_to_median)
-    worker.add_preprocess_step("ln")
-    worker.append_to_path('output_dir', 'yt_to_gs')
-    cv_wrap = set_up_cv_seeds(worker)
-    cv_wrap.run()
+            for seed in range(42,52):
 
-    del cv_wrap
-    del worker
+
+                worker = workflow.inferelator_workflow(regression="amusr", workflow="multitask")
+                set_up_workflow(worker, gs, tf_file)
+                worker.add_preprocess_step(single_cell.normalize_expression_to_median)
+                worker.add_preprocess_step("ln")
+                worker.append_to_path('output_dir', out_dir)
+                worker.append_to_path('output_dir', f'random_seed_{seed}')
+                worker.set_run_parameters(random_seed=seed)
+
+                results = worker.run()
+                csv_handler.writerow(["rank_combined", seed] + _scores(results))
+
+                for k in results.tasks_networks.keys():
+                    csv_handler.writerow([k, seed] + _scores(results.tasks_networks[k]))
