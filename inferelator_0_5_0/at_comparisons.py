@@ -86,5 +86,5 @@ if __name__ == '__main__':
                 results = worker.run()
                 csv_handler.writerow(["rank_combined", seed] + _scores(results))
 
-                for k in results.tasks_networks.keys():
-                    csv_handler.writerow([k, seed] + _scores(results.tasks_networks[k]))
+                for k in results.tasks.keys():
+                    csv_handler.writerow([k, seed] + _scores(results.tasks[k]))
