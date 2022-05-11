@@ -88,3 +88,5 @@ if __name__ == '__main__':
 
                 for k in results.tasks.keys():
                     csv_handler.writerow([k, seed] + _scores(results.tasks[k]))
+
+                out_fh.flush()
