@@ -67,6 +67,8 @@ if __name__ == '__main__':
     for out_dir, gs, tf_file in [('gs_to_gs', GOLD_STANDARD, TF_NAMES),
                                  ('yt_to_gs', YEASTRACT_PRIOR, YEASTRACT_TF_NAMES)]:
 
+        os.makedirs(os.path.join(OUTPUT_PATH, out_dir), exist_ok=True)
+        
         with open(os.path.join(OUTPUT_PATH, out_dir, "crossvalidation_task_performance.tsv"), "w") as out_fh:
 
             csv_handler = csv.writer(out_fh, delimiter="\t", lineterminator="\n", quoting=csv.QUOTE_NONE)
