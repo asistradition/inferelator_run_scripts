@@ -9,8 +9,8 @@ import gc
 N_PROCESSES = 8
 
 ## FILE NAMES ##
-OUTPUT_PATH = "/scratch/cj59/inferelator_ecoli"
-DATA_FILE_PATH = "/home/cj59/Documents/inferelator_data"
+OUTPUT_PATH = "/mnt/ceph/users/cjackson/ecoli"
+DATA_FILE_PATH = "/mnt/ceph/users/cjackson/inferelator/data"
 
 TASK1_EXPRESSION_FILE = "DREAM5/DREAM5_ecoli_expression.tsv"
 TASK2_EXPRESSION_FILE = "GSE206047/GSE206047_ecoli_tpm.tsv"
