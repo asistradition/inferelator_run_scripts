@@ -26,13 +26,6 @@ RANDOM_SEEDS = list(range(16, 26))
 
 ##############################################################
 
-MPControl.set_multiprocess_engine("dask-cluster")
-MPControl.client.use_default_configuration("rusty_ccb", n_jobs=n_jobs)
-MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
-MPControl.client.add_slurm_command_line("--constraint=broadwell")
-MPControl.connect()
-
-
 inferelator_verbose_level(1)
 
 def create_job_workflow():
