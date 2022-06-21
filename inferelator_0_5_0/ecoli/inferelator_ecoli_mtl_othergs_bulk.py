@@ -76,7 +76,7 @@ MPControl.connect()
 
 for name_str, path in PRIOR_KNOWLEDGE_NETWORK_FILE:
     ## SET UP A CROSS VALIDATION TO EVALUATE MODEL PERFORMANCE ##
-    wkf = create_job_workflow()
+    wkf = create_job_workflow(path)
     wkf.append_to_path('output_dir', 'name_str')
     wkf.set_crossvalidation_parameters(
         split_gold_standard_for_crossvalidation=True,
