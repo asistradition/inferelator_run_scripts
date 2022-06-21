@@ -26,10 +26,12 @@ RANDOM_SEEDS = list(range(16, 26))
 
 ##############################################################
 
-## SET MULTIPROCESSING SETTINGS ##
-MPControl.set_multiprocess_engine('multiprocessing')
-MPControl.set_processes(N_PROCESSES)
+MPControl.set_multiprocess_engine("dask-cluster")
+MPControl.client.use_default_configuration("rusty_ccb", n_jobs=n_jobs)
+MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
+MPControl.client.add_slurm_command_line("--constraint=broadwell")
 MPControl.connect()
+
 
 inferelator_verbose_level(1)
 
@@ -69,32 +71,34 @@ def create_job_workflow():
 
     return worker
 
+MPControl.set_multiprocess_engine("dask-cluster")
+MPControl.client.use_default_configuration("rusty_ccb", n_jobs=0)
+MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
+MPControl.client.add_slurm_command_line("--constraint=broadwell")
+MPControl.connect()
 
-## MP PROTECTION FOR WEIRD OSES ##
-if __name__ == '__main__':
+## SET UP A CROSS VALIDATION TO EVALUATE MODEL PERFORMANCE ##
+wkf = create_job_workflow()
+wkf.append_to_path('output_dir', 'crossvalidation')
+wkf.set_crossvalidation_parameters(
+    split_gold_standard_for_crossvalidation=True,
+    cv_split_ratio=0.2
+)
 
-    ## SET UP A CROSS VALIDATION TO EVALUATE MODEL PERFORMANCE ##
-    wkf = create_job_workflow()
-    wkf.append_to_path('output_dir', 'crossvalidation')
-    wkf.set_crossvalidation_parameters(
-        split_gold_standard_for_crossvalidation=True,
-        cv_split_ratio=0.2
-    )
+cv_wrap = CrossValidationManager(wkf)
+cv_wrap.add_gridsearch_parameter('random_seed', RANDOM_SEEDS)
+cv_wrap.run()
 
-    cv_wrap = CrossValidationManager(wkf)
-    cv_wrap.add_gridsearch_parameter('random_seed', RANDOM_SEEDS)
-    cv_wrap.run()
+del wkf
+del cv_wrap
 
-    del wkf
-    del cv_wrap
+gc.collect()
 
-    gc.collect()
-
-    ## BUILD A FINAL FULL NETWORK ##
-    wkf = create_job_workflow()
-    wkf.append_to_path('output_dir', 'final')
-    wkf.set_run_parameters(
-        num_bootstraps=50,
-        random_seed=999
-    )
-    wkf.run()
+## BUILD A FINAL FULL NETWORK ##
+wkf = create_job_workflow()
+wkf.append_to_path('output_dir', 'final')
+wkf.set_run_parameters(
+    num_bootstraps=50,
+    random_seed=999
+)
+wkf.run()
