@@ -13,7 +13,7 @@ OUTPUT_PATH = "/mnt/ceph/users/cjackson/ecoli"
 DATA_FILE_PATH = "/mnt/ceph/users/cjackson/inferelator/data"
 
 TASK1_EXPRESSION_FILE = "DREAM5/DREAM5_ecoli_expression.tsv"
-TASK2_EXPRESSION_FILE = "GSE206047/GSE206047_ecoli_tpm.tsv"
+TASK2_EXPRESSION_FILE = "GSE206047/GSE206047_ecoli_tpm.tsv.gz"
 
 PRIOR_KNOWLEDGE_NETWORK_FILE = "DREAM5/DREAM5_ecoli_gold_standard.tsv"
 
