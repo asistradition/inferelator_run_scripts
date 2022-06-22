@@ -16,9 +16,10 @@ TASK1_EXPRESSION_FILE = "DREAM5/DREAM5_ecoli_expression.tsv"
 TASK2_EXPRESSION_FILE = "GSE206047/GSE206047_ecoli_tpm.tsv.gz"
 
 PRIOR_KNOWLEDGE_NETWORK_FILE = [
+    ('regulondb', 'ecoli/regulondb_10_10.tsv.gz'),
+    ('dream5', "DREAM5/DREAM5_ecoli_gold_standard.tsv")
     ('genetic_network', "ecoli/genetic_network.tsv.gz"),
     ('generegulation_tmp', "ecoli/generegulation_tmp.tsv.gz"),
-    ('dream5', "DREAM5/DREAM5_ecoli_gold_standard.tsv")
 ]
 
 # Set to None if you just want to use all the TFs in the
@@ -32,11 +33,11 @@ RANDOM_SEEDS = list(range(16, 26))
 
 inferelator_verbose_level(1)
 
-def create_job_workflow(prior_file):
+def create_job_workflow(prior_file, regress='amusr'):
 
     ## SET PARAMETERS ##
     worker = workflow.inferelator_workflow(
-        regression="amusr",
+        regress="amusr",
         workflow="multitask"
     )
     worker.set_file_paths(
@@ -74,20 +75,22 @@ MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate infere
 MPControl.client.add_slurm_command_line("--constraint=broadwell")
 MPControl.connect()
 
-for name_str, path in PRIOR_KNOWLEDGE_NETWORK_FILE:
-    ## SET UP A CROSS VALIDATION TO EVALUATE MODEL PERFORMANCE ##
-    wkf = create_job_workflow(path)
-    wkf.append_to_path('output_dir', 'name_str')
-    wkf.set_crossvalidation_parameters(
-        split_gold_standard_for_crossvalidation=True,
-        cv_split_ratio=0.2
-    )
+for r in ['amusr', 'bbsr', 'stars']:
+    for name_str, path in PRIOR_KNOWLEDGE_NETWORK_FILE:
+        ## SET UP A CROSS VALIDATION TO EVALUATE MODEL PERFORMANCE ##
+        wkf = create_job_workflow(path, regress=r)
+        wkf.append_to_path('output_dir', r)
+        wkf.append_to_path('output_dir', name_str)
+        wkf.set_crossvalidation_parameters(
+            split_gold_standard_for_crossvalidation=True,
+            cv_split_ratio=0.2
+        )
 
-    cv_wrap = CrossValidationManager(wkf)
-    cv_wrap.add_gridsearch_parameter('random_seed', RANDOM_SEEDS)
-    cv_wrap.run()
+        cv_wrap = CrossValidationManager(wkf)
+        cv_wrap.add_gridsearch_parameter('random_seed', RANDOM_SEEDS)
+        cv_wrap.run()
 
-    del wkf
-    del cv_wrap
+        del wkf
+        del cv_wrap
 
-    gc.collect()
+        gc.collect()
