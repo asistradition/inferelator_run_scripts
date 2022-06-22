@@ -17,7 +17,7 @@ TASK2_EXPRESSION_FILE = "GSE206047/GSE206047_ecoli_tpm.tsv.gz"
 
 PRIOR_KNOWLEDGE_NETWORK_FILE = [
     ('regulondb', 'ecoli/regulondb_10_10.tsv.gz'),
-    ('dream5', "DREAM5/DREAM5_ecoli_gold_standard.tsv")
+    ('dream5', "DREAM5/DREAM5_ecoli_gold_standard.tsv"),
     ('genetic_network', "ecoli/genetic_network.tsv.gz"),
     ('generegulation_tmp', "ecoli/generegulation_tmp.tsv.gz"),
 ]
