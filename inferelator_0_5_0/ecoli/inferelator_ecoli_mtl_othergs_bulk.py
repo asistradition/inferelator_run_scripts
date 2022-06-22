@@ -37,7 +37,7 @@ def create_job_workflow(prior_file, regress='amusr'):
 
     ## SET PARAMETERS ##
     worker = workflow.inferelator_workflow(
-        regress="amusr",
+        regression=regress,
         workflow="multitask"
     )
     worker.set_file_paths(
