@@ -12,7 +12,7 @@ YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 
 EXPRESSION_FILE = "2021_RAPA_INFERELATOR.h5ad"
 
-INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/RAPA'
+INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/RAPA/'
 OUTPUT_PATH = '/mnt/ceph/users/cjackson/rapa_2022_networks'
 
 inferelator_verbose_level(1)
