@@ -56,7 +56,9 @@ if __name__ == "__main__":
 
     ### Expresssion Only ###
 
-    worker = inferelator_workflow(regression="stars", workflow="single-cell")
+    worker = set_up_workflow(
+        inferelator_workflow(regression="stars", workflow="single-cell")
+    )
     worker.set_expression_file(h5ad=EXPRESSION_FILE)
     worker.set_count_minimum(0.05)
     worker.add_preprocess_step("log2")
@@ -70,7 +72,9 @@ if __name__ == "__main__":
 
     gc.collect()
 
-    worker = inferelator_workflow(regression="stars", workflow="single-cell")
+    worker = set_up_workflow(
+        inferelator_workflow(regression="stars", workflow="single-cell")
+    )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.add_preprocess_step("log2")
     worker.append_to_path('output_dir', 'denoised_stars')
@@ -83,7 +87,9 @@ if __name__ == "__main__":
 
     gc.collect()
 
-    worker = inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+    worker = set_up_workflow(
+        inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+    )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.set_velocity_parameters(
         velocity_file_name=EXPRESSION_FILE,
@@ -101,7 +107,9 @@ if __name__ == "__main__":
 
     gc.collect()
 
-    worker = inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+    worker = set_up_workflow(
+        inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+    )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.set_velocity_parameters(
         velocity_file_name=EXPRESSION_FILE,
@@ -122,7 +130,9 @@ if __name__ == "__main__":
 
     gc.collect()
 
-    worker = inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+    worker = set_up_workflow(
+        inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+    )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.set_velocity_parameters(
         velocity_file_name=EXPRESSION_FILE,
