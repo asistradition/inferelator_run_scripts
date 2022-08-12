@@ -65,7 +65,7 @@ if __name__ == "__main__":
     worker.append_to_path('output_dir', 'expression_stars')
 
     cv = set_up_cv(worker)
-    cv.run()
+    #cv.run()
 
     del cv
     del worker
