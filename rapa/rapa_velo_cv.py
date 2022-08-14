@@ -15,6 +15,8 @@ EXPRESSION_FILE = "2021_RAPA_INFERELATOR.h5ad"
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/RAPA/'
 OUTPUT_PATH = '/mnt/ceph/users/cjackson/rapa_2022_networks'
 
+REGRESSION = "bbsr"
+
 inferelator_verbose_level(1)
 
 def set_up_workflow(wkf):
@@ -35,6 +37,9 @@ def set_up_workflow(wkf):
         num_bootstraps=5
     )
 
+    if REGRESSION == "bbsr":
+        wkf.set_regression_parameters(clr_only=True)
+
     return wkf
 
 def set_up_cv(wkf):
@@ -49,7 +54,7 @@ def set_up_cv(wkf):
 if __name__ == "__main__":
 
     MPControl.set_multiprocess_engine("dask-cluster")
-    MPControl.client.use_default_configuration("rusty_ccb", n_jobs=10)
+    MPControl.client.use_default_configuration("rusty_ccb", n_jobs=5)
     MPControl.client.set_cluster_params(local_workers=10)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
@@ -58,12 +63,12 @@ if __name__ == "__main__":
     ### Expresssion Only ###
 
     worker = set_up_workflow(
-        inferelator_workflow(regression="stars", workflow="single-cell")
+        inferelator_workflow(regression=REGRESSION, workflow="single-cell")
     )
     worker.set_expression_file(h5ad=EXPRESSION_FILE)
     worker.set_count_minimum(0.05)
     worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', 'expression_stars')
+    worker.append_to_path('output_dir', f'expression_{REGRESSION}')
 
     cv = set_up_cv(worker)
     #cv.run()
@@ -74,11 +79,11 @@ if __name__ == "__main__":
     gc.collect()
 
     worker = set_up_workflow(
-        inferelator_workflow(regression="stars", workflow="single-cell")
+        inferelator_workflow(regression=REGRESSION, workflow="single-cell")
     )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', 'denoised_stars')
+    worker.append_to_path('output_dir', f'denoised_{REGRESSION}')
 
     cv = set_up_cv(worker)
     cv.run()
@@ -89,7 +94,7 @@ if __name__ == "__main__":
     gc.collect()
 
     worker = set_up_workflow(
-        inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+        inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
     )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.set_velocity_parameters(
@@ -98,7 +103,7 @@ if __name__ == "__main__":
         velocity_file_layer='velocity'
     )
     worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', 'velocity_stars')
+    worker.append_to_path('output_dir', f'velocity_{REGRESSION}')
 
     cv = set_up_cv(worker)
     cv.run()
@@ -109,7 +114,7 @@ if __name__ == "__main__":
     gc.collect()
 
     worker = set_up_workflow(
-        inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+        inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
     )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.set_velocity_parameters(
@@ -121,7 +126,7 @@ if __name__ == "__main__":
         global_decay_constant=.0150515
     )
     worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', 'decay_20min_stars')
+    worker.append_to_path('output_dir', f'decay_20min_{REGRESSION}')
 
     cv = set_up_cv(worker)
     cv.run()
@@ -132,7 +137,7 @@ if __name__ == "__main__":
     gc.collect()
 
     worker = set_up_workflow(
-        inferelator_workflow(regression="stars", workflow=VelocityWorkflow)
+        inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
     )
     worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
     worker.set_velocity_parameters(
@@ -146,7 +151,7 @@ if __name__ == "__main__":
         decay_constant_file_layer='decay_constants'
     )
     worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', 'decay_latent_inferred_stars')
+    worker.append_to_path('output_dir', f'decay_latent_inferred_{REGRESSION}')
 
     cv = set_up_cv(worker)
     cv.run()
