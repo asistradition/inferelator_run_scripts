@@ -6,6 +6,51 @@ from inferelator import (CrossValidationManager,
 from inferelator.workflows.velocity_workflow import VelocityWorkflow
 
 import gc
+import argparse
+
+ap = argparse.ArgumentParser()
+
+ap.add_argument(
+    "--expression",
+    dest="expression",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
+    "--denoised",
+    dest="denoised",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
+    "--velocity",
+    dest="velocity",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
+    "--decay_constant",
+    dest="decay_constant",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
+    "--decay_variable",
+    dest="decay_variable",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+args = ap.parse_args()
 
 YEASTRACT_PRIOR = "YEASTRACT_20190713_BOTH.tsv.gz"
 YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
@@ -62,101 +107,106 @@ if __name__ == "__main__":
 
     ### Expresssion Only ###
 
-    worker = set_up_workflow(
-        inferelator_workflow(regression=REGRESSION, workflow="single-cell")
-    )
-    worker.set_expression_file(h5ad=EXPRESSION_FILE)
-    worker.set_count_minimum(0.05)
-    worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', f'expression_{REGRESSION}')
+    if args.expression:
+        worker = set_up_workflow(
+            inferelator_workflow(regression=REGRESSION, workflow="single-cell")
+        )
+        worker.set_expression_file(h5ad=EXPRESSION_FILE)
+        worker.set_count_minimum(0.05)
+        worker.add_preprocess_step("log2")
+        worker.append_to_path('output_dir', f'expression_{REGRESSION}')
 
-    cv = set_up_cv(worker)
-    #cv.run()
+        cv = set_up_cv(worker)
+        cv.run()
 
-    del cv
-    del worker
-
-    gc.collect()
-
-    worker = set_up_workflow(
-        inferelator_workflow(regression=REGRESSION, workflow="single-cell")
-    )
-    worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
-    worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', f'denoised_{REGRESSION}')
-
-    cv = set_up_cv(worker)
-    cv.run()
-
-    del cv
-    del worker
+        del cv
+        del worker
 
     gc.collect()
 
-    worker = set_up_workflow(
-        inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
-    )
-    worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
-    worker.set_velocity_parameters(
-        velocity_file_name=EXPRESSION_FILE,
-        velocity_file_type="h5ad",
-        velocity_file_layer='velocity'
-    )
-    worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', f'velocity_{REGRESSION}')
+    if args.denoised:
+        worker = set_up_workflow(
+            inferelator_workflow(regression=REGRESSION, workflow="single-cell")
+        )
+        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.add_preprocess_step("log2")
+        worker.append_to_path('output_dir', f'denoised_{REGRESSION}')
 
-    cv = set_up_cv(worker)
-    cv.run()
+        cv = set_up_cv(worker)
+        cv.run()
 
-    del cv
-    del worker
+        del cv
+        del worker
 
     gc.collect()
 
-    worker = set_up_workflow(
-        inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
-    )
-    worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
-    worker.set_velocity_parameters(
-        velocity_file_name=EXPRESSION_FILE,
-        velocity_file_type="h5ad",
-        velocity_file_layer='velocity'
-    )
-    worker.set_decay_parameters(
-        global_decay_constant=.0150515
-    )
-    worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', f'decay_20min_{REGRESSION}')
+    if args.velocity:
+        worker = set_up_workflow(
+            inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
+        )
+        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.set_velocity_parameters(
+            velocity_file_name=EXPRESSION_FILE,
+            velocity_file_type="h5ad",
+            velocity_file_layer='velocity'
+        )
+        worker.add_preprocess_step("log2")
+        worker.append_to_path('output_dir', f'velocity_{REGRESSION}')
 
-    cv = set_up_cv(worker)
-    cv.run()
+        cv = set_up_cv(worker)
+        cv.run()
 
-    del cv
-    del worker
+        del cv
+        del worker
 
     gc.collect()
 
-    worker = set_up_workflow(
-        inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
-    )
-    worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
-    worker.set_velocity_parameters(
-        velocity_file_name=EXPRESSION_FILE,
-        velocity_file_type="h5ad",
-        velocity_file_layer='velocity'
-    )
-    worker.set_decay_parameters(
-        decay_constant_file=EXPRESSION_FILE,
-        decay_constant_file_type="h5ad",
-        decay_constant_file_layer='decay_constants'
-    )
-    worker.add_preprocess_step("log2")
-    worker.append_to_path('output_dir', f'decay_latent_inferred_{REGRESSION}')
+    if args.decay_constant:
+        worker = set_up_workflow(
+            inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
+        )
+        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.set_velocity_parameters(
+            velocity_file_name=EXPRESSION_FILE,
+            velocity_file_type="h5ad",
+            velocity_file_layer='velocity'
+        )
+        worker.set_decay_parameters(
+            global_decay_constant=.0150515
+        )
+        worker.add_preprocess_step("log2")
+        worker.append_to_path('output_dir', f'decay_20min_{REGRESSION}')
 
-    cv = set_up_cv(worker)
-    cv.run()
+        cv = set_up_cv(worker)
+        cv.run()
 
-    del cv
-    del worker
+        del cv
+        del worker
+
+    gc.collect()
+
+    if args.decay_variable:
+        worker = set_up_workflow(
+            inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
+        )
+        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.set_velocity_parameters(
+            velocity_file_name=EXPRESSION_FILE,
+            velocity_file_type="h5ad",
+            velocity_file_layer='velocity'
+        )
+        worker.set_decay_parameters(
+            decay_constant_file=EXPRESSION_FILE,
+            decay_constant_file_type="h5ad",
+            decay_constant_file_layer='decay_constants'
+        )
+        worker.add_preprocess_step("log2")
+        worker.append_to_path('output_dir', f'decay_latent_inferred_{REGRESSION}')
+
+        cv = set_up_cv(worker)
+        cv.run()
+
+        del cv
+        del worker
 
     gc.collect()
