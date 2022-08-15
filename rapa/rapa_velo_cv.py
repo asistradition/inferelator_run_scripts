@@ -19,6 +19,14 @@ ap.add_argument(
 )
 
 ap.add_argument(
+    "--stars",
+    dest="stars",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
     "--denoised",
     dest="denoised",
     action='store_const',
@@ -60,7 +68,11 @@ EXPRESSION_FILE = "2021_RAPA_INFERELATOR.h5ad"
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/RAPA/'
 OUTPUT_PATH = '/mnt/ceph/users/cjackson/rapa_2022_networks'
 
-REGRESSION = "bbsr"
+if args.stars:
+    REGRESSION = "stars"
+else:
+    REGRESSION = "bbsr"
+
 
 inferelator_verbose_level(1)
 
@@ -84,6 +96,8 @@ def set_up_workflow(wkf):
 
     if REGRESSION == "bbsr":
         wkf.set_regression_parameters(clr_only=True)
+    elif REGRESSION == "stars":
+        wkf.set_regression_parameters(max_iter=500)
 
     return wkf
 
