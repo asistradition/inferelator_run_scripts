@@ -117,6 +117,10 @@ if __name__ == "__main__":
     MPControl.client.set_cluster_params(local_workers=10)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
+
+    if REGRESSION == "stars":
+        MPControl.client.set_batch_size(1)
+
     MPControl.connect()
 
     ### Expresssion Only ###
