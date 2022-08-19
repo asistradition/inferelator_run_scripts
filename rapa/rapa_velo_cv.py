@@ -4,6 +4,7 @@ from inferelator import (CrossValidationManager,
                          MPControl)
 
 from inferelator.workflows.velocity_workflow import VelocityWorkflow
+from inferelator.preprocessing.single_cell import normalize_expression_to_median
 
 import gc
 import argparse
@@ -117,6 +118,7 @@ if __name__ == "__main__":
     MPControl.client.set_cluster_params(local_workers=10)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
+    MPControl.client._await_all_workers = True
 
     if REGRESSION == "stars":
         MPControl.client.set_batch_size(1)
@@ -132,6 +134,7 @@ if __name__ == "__main__":
         worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_count_minimum(0.05)
         worker.add_preprocess_step("log2")
+        worker.add_preprocess_step(normalize_expression_to_median)
         worker.append_to_path('output_dir', f'expression_{REGRESSION}')
 
         cv = set_up_cv(worker)
