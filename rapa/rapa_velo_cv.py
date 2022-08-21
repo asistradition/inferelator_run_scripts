@@ -121,7 +121,9 @@ if __name__ == "__main__":
     MPControl.client._await_all_workers = True
 
     if REGRESSION == "stars":
-        MPControl.client.set_batch_size(1)
+        MPControl.client.set_task_parameters(batch_size=1)
+    elif REGRESSION == "bbsr":
+        MPControl.client.set_task_parameters(batch_size=20)
 
     MPControl.connect()
 
