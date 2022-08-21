@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_ccb", n_jobs=5)
-    MPControl.client.set_cluster_params(local_workers=10)
+    MPControl.client.set_cluster_params(local_workers=20)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
     MPControl.client.add_slurm_command_line("--constraint=broadwell")
     MPControl.client._await_all_workers = True
