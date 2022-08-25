@@ -133,7 +133,6 @@ if __name__ == "__main__":
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_count_minimum(0.05)
-        worker.add_preprocess_step("log2")
         worker.add_preprocess_step(normalize_expression_to_median)
         worker.append_to_path('output_dir', f'expression_{REGRESSION}')
 
@@ -150,7 +149,6 @@ if __name__ == "__main__":
             inferelator_workflow(regression=REGRESSION, workflow="single-cell")
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
-        worker.add_preprocess_step("log2")
         worker.append_to_path('output_dir', f'denoised_{REGRESSION}')
 
         cv = set_up_cv(worker)
@@ -171,7 +169,6 @@ if __name__ == "__main__":
             velocity_file_type="h5ad",
             velocity_file_layer='velocity'
         )
-        worker.add_preprocess_step("log2")
         worker.append_to_path('output_dir', f'velocity_{REGRESSION}')
 
         cv = set_up_cv(worker)
@@ -195,7 +192,6 @@ if __name__ == "__main__":
         worker.set_decay_parameters(
             global_decay_constant=.0150515
         )
-        worker.add_preprocess_step("log2")
         worker.append_to_path('output_dir', f'decay_20min_{REGRESSION}')
 
         cv = set_up_cv(worker)
@@ -221,7 +217,6 @@ if __name__ == "__main__":
             decay_constant_file_type="h5ad",
             decay_constant_file_layer='decay_constants'
         )
-        worker.add_preprocess_step("log2")
         worker.append_to_path('output_dir', f'decay_latent_inferred_{REGRESSION}')
 
         cv = set_up_cv(worker)
