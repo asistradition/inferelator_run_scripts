@@ -154,7 +154,6 @@ if __name__ == "__main__":
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_rome", n_jobs=1)
     MPControl.client.add_worker_conda("source ~/.local/anaconda3/bin/activate inferelator")
-    MPControl.client._await_all_workers = True
 
     if REGRESSION == "stars":
         MPControl.client.set_task_parameters(batch_size=1)
