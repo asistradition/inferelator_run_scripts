@@ -134,14 +134,20 @@ def set_up_workflow(wkf):
 
     return wkf
 
-def set_up_cv(wkf):
-    cv = CrossValidationManager(wkf)
-    cv.add_gridsearch_parameter(
-        'random_seed',
-        list(range(42, 52))
-    )
 
-    return cv
+if not args.full:
+    def set_up_cv(wkf):
+        cv = CrossValidationManager(wkf)
+        cv.add_gridsearch_parameter(
+            'random_seed',
+            list(range(42, 52))
+        )
+
+        return cv
+else:
+    def set_up_cv(wkf):
+        return wkf
+
 
 if __name__ == "__main__":
 
