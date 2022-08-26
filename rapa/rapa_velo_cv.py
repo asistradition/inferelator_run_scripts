@@ -87,6 +87,10 @@ if args.shuffle:
 else:
     SHUFFLE = False
 
+RESULTS_DIR = "{method}_" + f"{REGRESSION}"
+
+if SHUFFLE:
+    RESULTS_DIR = RESULTS_DIR + "_shuffle"
 
 inferelator_verbose_level(1)
 
@@ -113,8 +117,6 @@ def set_up_workflow(wkf):
 
     if REGRESSION == "bbsr":
         wkf.set_regression_parameters(clr_only=True)
-    elif REGRESSION == "stars":
-        wkf.set_regression_parameters(max_iter=500)
 
     return wkf
 
@@ -150,7 +152,8 @@ if __name__ == "__main__":
         worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_count_minimum(0.05)
         worker.add_preprocess_step(normalize_expression_to_median)
-        worker.append_to_path('output_dir', f'expression_{REGRESSION}')
+
+        worker.append_to_path('output_dir', RESULTS_DIR.format(method='expression'))
 
         cv = set_up_cv(worker)
         cv.run()
@@ -165,7 +168,7 @@ if __name__ == "__main__":
             inferelator_workflow(regression=REGRESSION, workflow="single-cell")
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
-        worker.append_to_path('output_dir', f'denoised_{REGRESSION}')
+        worker.append_to_path('output_dir', RESULTS_DIR.format(method='denoised'))
 
         cv = set_up_cv(worker)
         cv.run()
@@ -185,7 +188,7 @@ if __name__ == "__main__":
             velocity_file_type="h5ad",
             velocity_file_layer='velocity'
         )
-        worker.append_to_path('output_dir', f'velocity_{REGRESSION}')
+        worker.append_to_path('output_dir', RESULTS_DIR.format(method='velocity'))
 
         cv = set_up_cv(worker)
         cv.run()
@@ -208,7 +211,7 @@ if __name__ == "__main__":
         worker.set_decay_parameters(
             global_decay_constant=.0150515
         )
-        worker.append_to_path('output_dir', f'decay_20min_{REGRESSION}')
+        worker.append_to_path('output_dir', RESULTS_DIR.format(method='decay_20min'))
 
         cv = set_up_cv(worker)
         cv.run()
@@ -233,7 +236,7 @@ if __name__ == "__main__":
             decay_constant_file_type="h5ad",
             decay_constant_file_layer='decay_constants'
         )
-        worker.append_to_path('output_dir', f'decay_latent_inferred_{REGRESSION}')
+        worker.append_to_path('output_dir', RESULTS_DIR.format(method='decay_latent_inferred'))
 
         cv = set_up_cv(worker)
         cv.run()
