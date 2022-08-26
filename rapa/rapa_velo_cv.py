@@ -36,6 +36,14 @@ ap.add_argument(
 )
 
 ap.add_argument(
+    "--full",
+    dest="full",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
     "--denoised",
     dest="denoised",
     action='store_const',
@@ -103,14 +111,20 @@ def set_up_workflow(wkf):
         gold_standard_file='gold_standard.tsv.gz'
     )
 
-    wkf.set_crossvalidation_parameters(
-        split_gold_standard_for_crossvalidation=True,
-        cv_split_ratio=0.2
-    )
+    if not args.full:
+        wkf.set_crossvalidation_parameters(
+            split_gold_standard_for_crossvalidation=True,
+            cv_split_ratio=0.2
+        )
 
-    wkf.set_run_parameters(
-        num_bootstraps=5
-    )
+        wkf.set_run_parameters(
+            num_bootstraps=5
+        )
+
+    else:
+        wkf.set_run_parameters(
+            num_bootstraps=50
+        )
 
     if SHUFFLE:
         wkf.set_shuffle_parameters(shuffle_prior_axis=0)
