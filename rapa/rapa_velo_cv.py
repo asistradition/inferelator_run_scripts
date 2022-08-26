@@ -28,6 +28,14 @@ ap.add_argument(
 )
 
 ap.add_argument(
+    "--shuffle",
+    dest="shuffle",
+    action='store_const',
+    const=True,
+    default=False
+)
+
+ap.add_argument(
     "--denoised",
     dest="denoised",
     action='store_const',
@@ -74,6 +82,11 @@ if args.stars:
 else:
     REGRESSION = "bbsr"
 
+if args.shuffle:
+    SHUFFLE = True
+else:
+    SHUFFLE = False
+
 
 inferelator_verbose_level(1)
 
@@ -94,6 +107,9 @@ def set_up_workflow(wkf):
     wkf.set_run_parameters(
         num_bootstraps=5
     )
+
+    if SHUFFLE:
+        wkf.set_shuffle_parameters(shuffle_prior_axis=0)
 
     if REGRESSION == "bbsr":
         wkf.set_regression_parameters(clr_only=True)
