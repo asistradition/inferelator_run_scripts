@@ -100,6 +100,9 @@ RESULTS_DIR = "{method}_" + f"{REGRESSION}"
 if SHUFFLE:
     RESULTS_DIR = RESULTS_DIR + "_shuffle"
 
+if args.full:
+    RESULTS_DIR = RESULTS_DIR + "_full"
+
 inferelator_verbose_level(1)
 
 def set_up_workflow(wkf):
