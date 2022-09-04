@@ -111,7 +111,7 @@ def set_up_workflow(wkf):
         output_dir=OUTPUT_PATH,
         priors_file=YEASTRACT_PRIOR,
         tf_names_file=YEASTRACT_TF_NAMES,
-        gold_standard_file='gold_standard.tsv.gz'
+        gold_standard_file='gold_standard.tsv.gz' if not args.full else YEASTRACT_PRIOR
     )
 
     if not args.full:
