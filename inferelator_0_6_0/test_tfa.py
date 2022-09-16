@@ -75,6 +75,8 @@ if __name__ == "__main__":
 
     worker.append_to_path('output_dir', RESULTS_DIR.format(method='pinv'))
 
+    worker.set_tfa(tfa_driver=ActivityOnlyPinvTFA)
+
     cv = set_up_cv(worker)
     cv.run()
 
