@@ -5,6 +5,7 @@ from inferelator import (CrossValidationManager,
 
 from inferelator.workflows.velocity_workflow import VelocityWorkflow
 from inferelator.preprocessing.single_cell import normalize_expression_to_median
+from inferelator.preprocessing.tfa import NormalizedExpressionPinvTFA
 
 import gc
 import argparse
@@ -83,7 +84,7 @@ YEASTRACT_TF_NAMES = "tf_names_yeastract.txt"
 EXPRESSION_FILE = "2021_RAPA_INFERELATOR.h5ad"
 
 INPUT_DIR = '/mnt/ceph/users/cjackson/inferelator/data/RAPA/'
-OUTPUT_PATH = '/mnt/ceph/users/cjackson/rapa_2022_networks'
+OUTPUT_PATH = '/mnt/ceph/users/cjackson/rapa_2022_networks_newtfa'
 
 if args.stars:
     REGRESSION = "stars"
@@ -113,6 +114,8 @@ def set_up_workflow(wkf):
         tf_names_file=YEASTRACT_TF_NAMES,
         gold_standard_file='gold_standard.tsv.gz' if not args.full else YEASTRACT_PRIOR
     )
+
+    wkf.set_tfa(tfa_driver=NormalizedExpressionPinvTFA)
 
     if not args.full:
         wkf.set_crossvalidation_parameters(
