@@ -8,7 +8,7 @@ from inferelator import (
 
 from inferelator.workflows.velocity_workflow import VelocityWorkflow
 from inferelator.preprocessing.single_cell import normalize_expression_to_median
-from inferelator.preprocessing.tfa import NormalizedExpressionPinvTFA
+from inferelator.tfa.pinv_tfa import NormalizedExpressionPinvTFA
 
 import gc
 import argparse
