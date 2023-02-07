@@ -1,7 +1,10 @@
-from inferelator import (CrossValidationManager,
-                         inferelator_workflow,
-                         inferelator_verbose_level,
-                         MPControl)
+from inferelator import (
+    CrossValidationManager,
+    inferelator_workflow,
+    inferelator_verbose_level,
+    MPControl,
+    PreprocessData
+)
 
 from inferelator.workflows.velocity_workflow import VelocityWorkflow
 from inferelator.preprocessing.single_cell import normalize_expression_to_median
@@ -105,6 +108,7 @@ if args.full:
     RESULTS_DIR = RESULTS_DIR + "_full"
 
 inferelator_verbose_level(1)
+PreprocessData.scale_limit=10
 
 def set_up_workflow(wkf):
     wkf.set_file_paths(
