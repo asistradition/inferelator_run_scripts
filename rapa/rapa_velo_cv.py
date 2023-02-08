@@ -108,7 +108,11 @@ if args.full:
     RESULTS_DIR = RESULTS_DIR + "_full"
 
 inferelator_verbose_level(1)
-PreprocessData.scale_limit=10
+
+PreprocessData.set_preprocessing_method(
+    'robustscaler',
+    scale_limit=10
+)
 
 def set_up_workflow(wkf):
     wkf.set_file_paths(
