@@ -110,9 +110,11 @@ if args.full:
 inferelator_verbose_level(1)
 
 PreprocessData.set_preprocessing_method(
-    'robustscaler',
-    scale_limit=10
+    method_predictors='raw',
+    method_response='robustscaler',
+    scale_limit_response=10
 )
+
 
 def set_up_workflow(wkf):
     wkf.set_file_paths(
