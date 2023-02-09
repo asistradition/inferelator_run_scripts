@@ -6,9 +6,8 @@ from inferelator import (
     PreprocessData
 )
 
-from inferelator.workflows.velocity_workflow import VelocityWorkflow
 from inferelator.preprocessing.single_cell import normalize_expression_to_median
-from inferelator.tfa.pinv_tfa import NormalizedExpressionPinvTFA
+from inferelator.tfa.pinv_tfa import ActivityOnlyPinvTFA
 
 import gc
 import argparse
@@ -110,9 +109,11 @@ if args.full:
 inferelator_verbose_level(1)
 
 PreprocessData.set_preprocessing_method(
-    method_predictors='raw',
-    method_response='robustscaler',
-    scale_limit_response=10
+    method_tfa='robustscaler',
+    method_predictors='zscore',
+    method_response='zscore',
+    scale_limit_response=10,
+    scale_limit_tfa=10
 )
 
 
@@ -125,7 +126,7 @@ def set_up_workflow(wkf):
         gold_standard_file='gold_standard.tsv.gz' if not args.full else YEASTRACT_PRIOR
     )
 
-    wkf.set_tfa(tfa_driver=NormalizedExpressionPinvTFA)
+    wkf.set_tfa(tfa_driver=ActivityOnlyPinvTFA)
 
     if not args.full:
         wkf.set_crossvalidation_parameters(
@@ -215,7 +216,7 @@ if __name__ == "__main__":
 
     if args.velocity:
         worker = set_up_workflow(
-            inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
+            inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
         worker.set_velocity_parameters(
@@ -235,7 +236,7 @@ if __name__ == "__main__":
 
     if args.decay_constant:
         worker = set_up_workflow(
-            inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
+            inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
         worker.set_velocity_parameters(
@@ -246,7 +247,10 @@ if __name__ == "__main__":
         worker.set_decay_parameters(
             global_decay_constant=.0150515
         )
-        worker.append_to_path('output_dir', RESULTS_DIR.format(method='decay_20min'))
+        worker.append_to_path(
+            'output_dir',
+            RESULTS_DIR.format(method='decay_45min')
+        )
 
         cv = set_up_cv(worker)
         cv.run()
@@ -258,7 +262,7 @@ if __name__ == "__main__":
 
     if args.decay_variable:
         worker = set_up_workflow(
-            inferelator_workflow(regression=REGRESSION, workflow=VelocityWorkflow)
+            inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
         worker.set_velocity_parameters(
@@ -271,7 +275,10 @@ if __name__ == "__main__":
             decay_constant_file_type="h5ad",
             decay_constant_file_layer='decay_constants'
         )
-        worker.append_to_path('output_dir', RESULTS_DIR.format(method='decay_latent_inferred'))
+        worker.append_to_path(
+            'output_dir',
+            RESULTS_DIR.format(method='decay_latent_inferred')
+        )
 
         cv = set_up_cv(worker)
         cv.run()
