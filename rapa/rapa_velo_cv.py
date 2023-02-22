@@ -6,11 +6,11 @@ from inferelator import (
     PreprocessData
 )
 
-from inferelator.preprocessing.single_cell import normalize_expression_to_median
 from inferelator.tfa.pinv_tfa import ActivityOnlyPinvTFA
 
 import gc
 import argparse
+import numpy as np
 
 ap = argparse.ArgumentParser()
 
@@ -187,7 +187,6 @@ if __name__ == "__main__":
         )
         worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_count_minimum(0.05)
-        worker.add_preprocess_step(normalize_expression_to_median)
 
         worker.append_to_path('output_dir', RESULTS_DIR.format(method='expression'))
 
@@ -218,7 +217,7 @@ if __name__ == "__main__":
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
-        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_velocity_parameters(
             velocity_file_name=EXPRESSION_FILE,
             velocity_file_type="h5ad",
@@ -238,18 +237,18 @@ if __name__ == "__main__":
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
-        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_velocity_parameters(
             velocity_file_name=EXPRESSION_FILE,
             velocity_file_type="h5ad",
             velocity_file_layer='velocity'
         )
         worker.set_decay_parameters(
-            global_decay_constant=.0150515
+            global_decay_constant=np.log(2) / 25
         )
         worker.append_to_path(
             'output_dir',
-            RESULTS_DIR.format(method='decay_45min')
+            RESULTS_DIR.format(method='decay_25min')
         )
 
         cv = set_up_cv(worker)
@@ -264,7 +263,7 @@ if __name__ == "__main__":
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
-        worker.set_expression_file(h5ad=EXPRESSION_FILE, h5_layer='denoised')
+        worker.set_expression_file(h5ad=EXPRESSION_FILE)
         worker.set_velocity_parameters(
             velocity_file_name=EXPRESSION_FILE,
             velocity_file_type="h5ad",
