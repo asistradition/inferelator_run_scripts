@@ -108,14 +108,6 @@ if args.full:
 
 inferelator_verbose_level(1)
 
-PreprocessData.set_preprocessing_method(
-    method_tfa='robustscaler',
-    method_predictors='zscore',
-    method_response='zscore',
-    scale_limit_response=10,
-    scale_limit_tfa=10
-)
-
 
 def set_up_workflow(wkf):
     wkf.set_file_paths(
@@ -182,6 +174,15 @@ if __name__ == "__main__":
     ### Expresssion Only ###
 
     if args.expression:
+
+        PreprocessData.set_preprocessing_method(
+            method_tfa=None,
+            method_predictors='zscore',
+            method_response='zscore',
+            scale_limit_predictors=10,
+            scale_limit_response=10
+        )
+
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow="single-cell")
         )
@@ -199,6 +200,15 @@ if __name__ == "__main__":
     gc.collect()
 
     if args.denoised:
+
+        PreprocessData.set_preprocessing_method(
+            method_tfa=None,
+            method_predictors='zscore',
+            method_response='zscore',
+            scale_limit_predictors=10,
+            scale_limit_response=10
+        )
+
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow="single-cell")
         )
@@ -214,6 +224,15 @@ if __name__ == "__main__":
     gc.collect()
 
     if args.velocity:
+
+        PreprocessData.set_preprocessing_method(
+            method_tfa=None,
+            method_predictors='zscore',
+            method_response='zscore',
+            scale_limit_predictors=10,
+            scale_limit_response=10
+        )
+
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
@@ -234,6 +253,15 @@ if __name__ == "__main__":
     gc.collect()
 
     if args.decay_constant:
+
+        PreprocessData.set_preprocessing_method(
+            method_tfa=None,
+            method_predictors='zscore',
+            method_response='zscore',
+            scale_limit_predictors=10,
+            scale_limit_response=10
+        )
+
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
@@ -260,6 +288,16 @@ if __name__ == "__main__":
     gc.collect()
 
     if args.decay_variable:
+
+        PreprocessData.set_preprocessing_method(
+            method_tfa='robustscaler',
+            method_predictors='zscore',
+            method_response='zscore',
+            scale_limit_predictors=10,
+            scale_limit_response=10,
+            scale_limit_tfa=20
+        )
+
         worker = set_up_workflow(
             inferelator_workflow(regression=REGRESSION, workflow='velocity')
         )
