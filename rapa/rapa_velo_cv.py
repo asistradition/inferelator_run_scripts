@@ -155,7 +155,6 @@ if not args.full:
         return cv
 else:
     def set_up_cv(wkf):
-        wkf.append_to_path('output_dir', 'full')
         return wkf
 
 
