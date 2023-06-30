@@ -113,7 +113,7 @@ if __name__ == '__main__':
         workflow=SCENICWorkflow
     )
     worker = set_up_workflow(worker, yeast=True)
-    worker.set_expression_file(tsv="calico_expression_matrix_raw_microarray.tsv.gz")
+    worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
     worker.set_file_properties(
         extract_metadata_from_expression_matrix=True,
         expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
@@ -129,7 +129,7 @@ if __name__ == '__main__':
         workflow=SCENICWorkflow
     )
     worker = set_up_workflow(worker)
-    worker.set_expression_file(tsv="calico_expression_matrix_raw_microarray.tsv.gz")
+    worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
     worker.set_file_properties(
         extract_metadata_from_expression_matrix=True,
         expression_matrix_metadata=['TF', 'strain', 'date', 'restriction', 'mechanism', 'time'],
