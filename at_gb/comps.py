@@ -152,7 +152,6 @@ if __name__ == '__main__':
         metadata_handler="branching"
     )
     worker.adjacency_method = "grnboost2"
-
     worker.append_to_path("output_dir", "yeast_set2_grnboost")
     worker.run()
 
@@ -168,7 +167,6 @@ if __name__ == '__main__':
         metadata_handler="branching"
     )
     worker.adjacency_method = "genie3"
-
     worker.append_to_path("output_dir", "yeast_set2_genie3")
     worker.run()
 
@@ -200,5 +198,5 @@ if __name__ == '__main__':
     worker._do_scaling = False
     worker.adjacency_method = "genie3"
     worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
-    worker.append_to_path("output_dir", "yeast_set1_genie3")
+    worker.append_to_path("output_dir", "yeast_single_cell_genie3")
     worker.run()
