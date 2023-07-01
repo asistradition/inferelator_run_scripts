@@ -44,7 +44,7 @@ if __name__ == '__main__':
                 tf_names_file=AT_TF,
                 priors_file=YEAST_PRIOR,
                 gold_standard_file=GOLD_STANDARD_FILE_NAME,
-                gengene_metadata_file=AT_GENES
+                gene_metadata_file=AT_GENES
             )
 
         elif yeast:
