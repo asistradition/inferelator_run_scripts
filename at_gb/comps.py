@@ -128,7 +128,7 @@ if __name__ == '__main__':
         regression=SCENICRegression,
         workflow=SCENICWorkflow
     )
-    worker = set_up_workflow(worker)
+    worker = set_up_workflow(worker, yeast=True)
     worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
     worker.set_file_properties(
         extract_metadata_from_expression_matrix=True,
@@ -144,7 +144,7 @@ if __name__ == '__main__':
         regression=SCENICRegression,
         workflow=SCENICWorkflow
     )
-    worker = set_up_workflow(worker)
+    worker = set_up_workflow(worker, yeast=True)
     worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
     worker.set_file_properties(
         extract_metadata_from_expression_matrix=True,
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         regression=SCENICRegression,
         workflow=SCENICWorkflow
     )
-    worker = set_up_workflow(worker)
+    worker = set_up_workflow(worker, yeast=True)
     worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
     worker.set_file_properties(
         extract_metadata_from_expression_matrix=True,
