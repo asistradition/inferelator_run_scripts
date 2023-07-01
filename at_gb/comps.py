@@ -79,7 +79,7 @@ if __name__ == '__main__':
     )
     worker = set_up_workflow(worker, yeast=True, at=True)
     worker.set_expression_file(
-        h5ad="GSE144820_GSE125162.h5ad",
+        h5ad="AT_YEAST_SINGLE_CELL.h5ad",
         h5_layer='robustminscaler'
     )
     worker._do_scaling = False
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     )
     worker = set_up_workflow(worker, yeast=True, at=True)
     worker.set_expression_file(
-        h5ad="GSE144820_GSE125162.h5ad",
+        h5ad="AT_YEAST_SINGLE_CELL.h5ad",
         h5_layer='robustminscaler'
     )
     worker._do_scaling = False
