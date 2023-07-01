@@ -46,6 +46,9 @@ if __name__ == '__main__':
                 gold_standard_file=GOLD_STANDARD_FILE_NAME,
                 gene_metadata_file=AT_GENES
             )
+            wkf.set_file_properties(
+                gene_list_index='SystematicName'
+            )
 
         elif yeast:
             wkf.set_file_paths(
