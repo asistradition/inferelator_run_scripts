@@ -24,6 +24,9 @@ TF_LIST_FILE_NAME = 'tf_names.tsv'
 YEAST_TF_LIST_FILE_NAME = 'tf_names_yeastract.txt'
 YEAST_PRIOR = 'YEASTRACT_20190713_BOTH.tsv'
 
+AT_TF = "AT_TFs.tsv"
+AT_GENES = "AT_GENES.tsv"
+
 if __name__ == '__main__':
     MPControl.set_multiprocess_engine("dask-cluster")
     MPControl.client.use_default_configuration("rusty_rome", n_jobs=1)
@@ -32,9 +35,19 @@ if __name__ == '__main__':
     )
 
     # Define the general run parameters
-    def set_up_workflow(wkf, yeast=False):
+    def set_up_workflow(wkf, yeast=False, at=False):
 
-        if yeast:
+        if at:
+            wkf.set_file_paths(
+                input_dir=YEAST_DATA_DIR,
+                output_dir=OUTPUT_DIR,
+                tf_names_file=AT_TF,
+                priors_file=YEAST_PRIOR,
+                gold_standard_file=GOLD_STANDARD_FILE_NAME,
+                gengene_metadata_file=AT_GENES
+            )
+
+        elif yeast:
             wkf.set_file_paths(
                 input_dir=YEAST_DATA_DIR,
                 output_dir=OUTPUT_DIR,
@@ -57,6 +70,38 @@ if __name__ == '__main__':
         wkf.do_scenic = False
         wkf.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
         return wkf
+
+
+    # YEAST SINGLE CELL #
+    worker = inferelator_workflow(
+        regression=SCENICRegression,
+        workflow=SCENICWorkflow
+    )
+    worker = set_up_workflow(worker, yeast=True, at=True)
+    worker.set_expression_file(
+        h5ad="GSE144820_GSE125162.h5ad",
+        h5_layer='robustminscaler'
+    )
+    worker._do_scaling = False
+    worker.adjacency_method = "grnboost2"
+    worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
+    worker.append_to_path("output_dir", "yeast_single_cell_grnboost")
+    worker.run()
+
+    worker = inferelator_workflow(
+        regression=SCENICRegression,
+        workflow=SCENICWorkflow
+    )
+    worker = set_up_workflow(worker, yeast=True, at=True)
+    worker.set_expression_file(
+        h5ad="GSE144820_GSE125162.h5ad",
+        h5_layer='robustminscaler'
+    )
+    worker._do_scaling = False
+    worker.adjacency_method = "genie3"
+    worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
+    worker.append_to_path("output_dir", "yeast_single_cell_genie3")
+    worker.run()
 
     # BSUBTILIS #
     worker = inferelator_workflow(
@@ -168,35 +213,4 @@ if __name__ == '__main__':
     )
     worker.adjacency_method = "genie3"
     worker.append_to_path("output_dir", "yeast_set2_genie3")
-    worker.run()
-
-    # YEAST SINGLE CELL #
-    worker = inferelator_workflow(
-        regression=SCENICRegression,
-        workflow=SCENICWorkflow
-    )
-    worker = set_up_workflow(worker, yeast=True)
-    worker.set_expression_file(
-        h5ad="GSE144820_GSE125162.h5ad",
-        h5_layer='robustminscaler'
-    )
-    worker._do_scaling = False
-    worker.adjacency_method = "grnboost2"
-    worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
-    worker.append_to_path("output_dir", "yeast_single_cell_grnboost")
-    worker.run()
-
-    worker = inferelator_workflow(
-        regression=SCENICRegression,
-        workflow=SCENICWorkflow
-    )
-    worker = set_up_workflow(worker, yeast=True)
-    worker.set_expression_file(
-        h5ad="GSE144820_GSE125162.h5ad",
-        h5_layer='robustminscaler'
-    )
-    worker._do_scaling = False
-    worker.adjacency_method = "genie3"
-    worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
-    worker.append_to_path("output_dir", "yeast_single_cell_genie3")
     worker.run()
