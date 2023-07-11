@@ -22,7 +22,8 @@ GOLD_STANDARD_FILE_NAME = 'gold_standard.tsv.gz'
 TF_LIST_FILE_NAME = 'tf_names.tsv'
 
 YEAST_TF_LIST_FILE_NAME = 'tf_names_yeastract.txt'
-YEAST_PRIOR = 'YEASTRACT_20190713_BOTH.tsv'
+YEAST_GOLD_STANDARD = 'YEASTGENOME_PRIOR_YEASTRACT_MASK_20230711.tsv.gz'
+YEAST_PRIOR = 'YEASTGENOME_PRIOR_YEASTRACT_MASK_20230711.tsv.gz'
 
 AT_TF = "AT_TFs.tsv"
 AT_GENES = "AT_GENES.tsv"
@@ -43,7 +44,7 @@ if __name__ == '__main__':
                 output_dir=OUTPUT_DIR,
                 tf_names_file=AT_TF,
                 priors_file=YEAST_PRIOR,
-                gold_standard_file=GOLD_STANDARD_FILE_NAME,
+                gold_standard_file=YEAST_GOLD_STANDARD,
                 gene_names_file=AT_GENES
             )
 
@@ -53,7 +54,7 @@ if __name__ == '__main__':
                 output_dir=OUTPUT_DIR,
                 tf_names_file=YEAST_TF_LIST_FILE_NAME,
                 priors_file=YEAST_PRIOR,
-                gold_standard_file=GOLD_STANDARD_FILE_NAME
+                gold_standard_file=YEAST_GOLD_STANDARD
             )
 
         else:
