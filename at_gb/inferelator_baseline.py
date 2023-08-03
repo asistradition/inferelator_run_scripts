@@ -77,7 +77,7 @@ if __name__ == '__main__':
     )
     worker = set_up_workflow(worker, yeast=True, at=True)
     worker.set_expression_file(
-        h5ad="AT_YEAST_single_cell.h5ad",
+        h5ad="AT_YEAST_SINGLE_CELL.h5ad",
         h5_layer='robustminscaler'
     )
     worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
