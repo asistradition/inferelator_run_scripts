@@ -73,11 +73,11 @@ if __name__ == '__main__':
     # YEAST SINGLE CELL #
     worker = inferelator_workflow(
         regression='stars',
-        workflow='single_cell'
+        workflow='single-cell'
     )
     worker = set_up_workflow(worker, yeast=True, at=True)
     worker.set_expression_file(
-        h5ad="AT_YEAST_SINGLE_CELL.h5ad",
+        h5ad="AT_YEAST_single_cell.h5ad",
         h5_layer='robustminscaler'
     )
     worker.set_output_file_names(curve_data_file_name="metric_curve.tsv.gz")
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     # BSUBTILIS #
     worker = inferelator_workflow(
         regression='stars',
-        workflow='single_cell'
+        workflow='single-cell'
     )
     worker = set_up_workflow(worker)
     worker.set_file_paths(meta_data_file="meta_data.tsv")
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
     worker = inferelator_workflow(
         regression='stars',
-        workflow='single_cell'
+        workflow='single-cell'
     )
     worker = set_up_workflow(worker)
     worker.set_file_paths(meta_data_file="GSE67023_meta_data.tsv")
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     # YEAST #
     worker = inferelator_workflow(
         regression='stars',
-        workflow='single_cell'
+        workflow='single-cell'
     )
     worker = set_up_workflow(worker, yeast=True)
     worker.set_expression_file(tsv="calico_expression_matrix_log2.tsv.gz")
@@ -124,7 +124,7 @@ if __name__ == '__main__':
 
     worker = inferelator_workflow(
         regression='stars',
-        workflow='single_cell'
+        workflow='single-cell'
     )
     worker = set_up_workflow(worker, yeast=True)
     worker.set_expression_file(tsv="kostya_microarray_yeast.tsv.gz")
